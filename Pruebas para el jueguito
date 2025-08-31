@@ -1,3 +1,21 @@
-import pygame
+//Se añaden ls librerias que se utilizaran
+import pygame 
 import sys
+from pymx.util_pygame import load_pygame
 
+
+//Se crea la ventana principal para el juego
+pygame.init()
+ventana = pygame.display.set_mode((1280,720))
+
+//Nombre del juego(por el momento)
+pygame.display.set_caption("ODS 11")
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+           pygame.quit()
+           sys.exit()
+
+    screen.fill('black')
+    pygame.display.update()
