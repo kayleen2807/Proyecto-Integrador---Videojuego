@@ -4,6 +4,7 @@ import pygame, sys
 
 # Bucle principal del juego
 def main():
+    #Se incia el programa con la pantalla de inicio (bienvevida)
     pantalla_actual = "inicio"
     while True: 
         if pantalla_actual == "inicio":
