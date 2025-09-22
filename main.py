@@ -27,5 +27,6 @@ def main():
 try:
     main()
 except Exception as e:
+    #detectar algun erro mas facil
     print("¡Error detectado!")
     print(e)
