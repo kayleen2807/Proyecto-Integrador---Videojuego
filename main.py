@@ -6,15 +6,21 @@ import pygame, sys
 def main():
     #Se incia el programa con la pantalla de inicio (bienvevida)
     pantalla_actual = "inicio"
+    #Este bucle hace el intercanbio de una pantalla a otra y se activa la funcion de cada una
     while True: 
+        #inicio/bienvenida
         if pantalla_actual == "inicio":
             pantalla_actual = inicio()
+        #menu principal
         elif pantalla_actual == "menu":
             pantalla_actual = menu_prin()
+        #ventana para jugar
         elif pantalla_actual == "play":
             pantalla_actual = play()
+        #ventana opciones
         elif pantalla_actual == "opciones":
             pantalla_actual = opciones()
+        #salir del juego
         elif pantalla_actual == "salir":
             pygame.quit()
             sys.exit()
