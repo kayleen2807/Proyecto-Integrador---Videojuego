@@ -1,4 +1,5 @@
-from screens import inicio, menu_prin, opciones
+from pantalla_seleccion import inicio, menu_prin, opciones
+from selection_screen import selection
 from game import play
 import pygame, sys
 
@@ -14,6 +15,9 @@ def main():
         #menu principal
         elif pantalla_actual == "menu":
             pantalla_actual = menu_prin()
+        #seleccion de personajes
+        elif pantalla_actual == "selection":
+            pantalla_actual = selection()
         #ventana para jugar
         elif pantalla_actual == "play":
             pantalla_actual = play()
