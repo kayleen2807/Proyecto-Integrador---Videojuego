@@ -10,11 +10,13 @@ import pygame, pytmx
 pygame.init()
 
 # Configuración de pantalla
-pantalla = pygame.display.set_mode((1280, 720), pygame.FULLSCREEN)
+pantalla = pygame.display.set_mode((1280, 720)) #, pygame.FULLSCREEN)
 pygame.display.set_caption("Menu principal")
 
 #fondo
-fondo = pygame.image.load("assets/Background.png")
+fondo = pygame.image.load("assets/menu_fondo.png").convert()
+fondo = pygame.transform.scale(fondo, pantalla.get_size())
+pantalla.blit(fondo, (0, 0))
 nfondo = pygame.image.load("assets/Fondo.png")
 
 # Función para cargar fuente
@@ -105,7 +107,7 @@ def play():
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
 
         # Botón ATRÁS
-        boton_atras = Button(image=None, pos=(640, 460), text_input="ATRAS", font=get_font(15), base_color="White", hovering_color="Blue")
+        boton_atras = Button(image=None, image_hover=None, pos=(640, 460), text_input="ATRAS", font=get_font(15), base_color="White", hovering_color="Blue")
         boton_atras.changeColor(mouse_pos)
         boton_atras.update(pantalla)
 
