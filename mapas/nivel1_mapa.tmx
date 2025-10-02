@@ -887,7 +887,7 @@
   <image source="piedras.png" width="528" height="381"/>
  </tileset>
  <tileset firstgid="353" name="bosque" tilewidth="32" tileheight="32" tilecount="24" columns="6">
-  <image source="../../../Downloads/assets_version1.1.png" width="192" height="128"/>
+  <image source="assets_version1.1.png" width="192" height="128"/>
  </tileset>
  <layer id="1" name="Capa de patrones 1" width="70" height="50">
   <data encoding="csv">
