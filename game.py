@@ -13,17 +13,29 @@ pygame.init()
 pantalla = pygame.display.set_mode((1280, 720)) #, pygame.FULLSCREEN)
 pygame.display.set_caption("Menu principal")
 
-#fondo
+#fondo para el menu principal
 fondo = pygame.image.load("assets/menu_fondo.png").convert()
 fondo = pygame.transform.scale(fondo, pantalla.get_size())
+#fondo para el nivel 1
 pantalla.blit(fondo, (0, 0))
 nfondo = pygame.image.load("assets/Fondo.png")
 
 # Función para cargar fuente
 def get_font(size):
     return pygame.font.Font("assets/font.ttf", size)
-
-# Pantalla principal del juego
+#transicion
+def fade_in_total(pantalla, fondo, duracion=1000):
+    clock = pygame.time.Clock()
+    overlay = pygame.Surface(pantalla.get_size())
+    overlay.fill((0, 0, 0))
+    alpha = 255
+    while alpha > 0:
+        pantalla.blit(fondo, (0, 0))
+        overlay.set_alpha(alpha)
+        pantalla.blit(overlay, (0, 0))
+        pygame.display.flip()
+        alpha -= 255 / (duracion / clock.tick(60))
+# Pantalla principal del juego para jugar
 def play():
     pygame.display.set_caption("Play")
     zoom = 1.5
@@ -32,6 +44,11 @@ def play():
     en_el_suelo = False
 
     nombre = selection(pantalla)  # "Masculino" o "Femenino"
+    # Cargar fondo del mapa para transición
+    fondo_mapa_preview = pygame.image.load("assets/Fondo.png").convert()
+    fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
+    fade_in_total(pantalla, fondo_mapa_preview)
+    #cargar mapa y colisiones
     tmx_data = pytmx.util_pygame.load_pygame("mapas/nivel1_mapa.tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
 
@@ -45,6 +62,7 @@ def play():
         pantalla.blit(nfondo, (0,0))
         mouse_pos = pygame.mouse.get_pos()
         keys = pygame.key.get_pressed()
+        
         velocidad = 4.2 / zoom
 
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
