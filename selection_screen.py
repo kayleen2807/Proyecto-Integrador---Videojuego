@@ -50,7 +50,7 @@ def fade_out_zoom(pantalla, personaje_img, fondo, seleccion, duracion=1000):
 
 def selection(pantalla):
     #fondo para la seleccion
-    fondo_seleccion = pygame.image.load("assets/seleccion.png").convert()
+    fondo_seleccion = pygame.image.load("assets/fondos/seleccion.png").convert()
     fondo_seleccion = pygame.transform.scale(fondo_seleccion, pantalla.get_size())
     fade_in(pantalla, fondo_seleccion)
 
