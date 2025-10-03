@@ -1,5 +1,5 @@
 from config import pantalla, get_font
-from game import fondo
+from juego import fondo
 from button import Button
 import pygame
 # Pantalla de inicio

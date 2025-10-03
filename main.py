@@ -1,6 +1,6 @@
 from pantalla_seleccion import inicio, menu_prin, opciones
 from selection_screen import selection
-from game import play
+from juego import play
 import pygame, sys
 
 # Bucle principal del juego

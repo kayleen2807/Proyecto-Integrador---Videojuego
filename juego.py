@@ -6,7 +6,7 @@ from button import Button
 from config import pantalla, get_font
 from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
-import pygame, pytmx
+from game_over import game_over
 #inicio para pygame
 pygame.init()
 
@@ -20,11 +20,13 @@ fondo = pygame.transform.scale(fondo, pantalla.get_size())
 
 #fondo para el nivel 1
 pantalla.blit(fondo, (0, 0))
+
 nfondo = pygame.image.load("assets/fondos/Fondo.png")
 
 # Función para cargar fuente
 def get_font(size):
     return pygame.font.Font("assets/font.ttf", size)
+
 #transicion
 def fade_in_total(pantalla, fondo, duracion=1000):
     clock = pygame.time.Clock()
@@ -40,6 +42,7 @@ def fade_in_total(pantalla, fondo, duracion=1000):
 
 # Pantalla principal del juego para jugar
 def play():
+    boton_continuar = boton_reiniciar = boton_menu = None
     #nombre de la ventana
     pygame.display.set_caption("Play")
     #zoom, gravedad, velocidad vertical del personaje
@@ -75,6 +78,8 @@ def play():
 
     #variable para el meni de pausa
     pausado = False
+    #variable para las vidas
+    vidas = 3
 
     while True:
         pantalla.blit(nfondo, (0,0))
@@ -113,6 +118,20 @@ def play():
                         jugador.rect.top = rect.bottom
                         vel_y = 0
 
+            map_height_px = tmx_data.height * tmx_data.tileheight
+            if jugador.rect.y > map_height_px:  # cayó fuera del mapa
+                vidas -= 1
+                if vidas > 0:
+                    # Reinicia posición
+                    for obj in tmx_data.objects:
+                        if obj.name == "player_start":
+                            jugador.rect.x = obj.x
+                            jugador.rect.y = obj.y
+                            vel_y = 0
+                            break
+                else:
+                    return game_over(pantalla)  
+
             camara_x = jugador.rect.x - pantalla.get_width() // 2 + jugador.rect.width // 2
             camara_y = jugador.rect.y - pantalla.get_height() // 2 + jugador.rect.height // 2
 
@@ -146,7 +165,7 @@ def play():
         boton_pausa.changeColor(mouse_pos)
         boton_pausa.update(pantalla)
 
-        #eventos para los botones
+        # Eventos (siempre activos)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "salir"
@@ -156,22 +175,22 @@ def play():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_pausa.checkForInput(mouse_pos):
                     pausado = not pausado
+                elif pausado:
+                    if boton_continuar and boton_continuar.checkForInput(mouse_pos):
+                        pausado = False
+                    elif boton_menu and boton_menu.checkForInput(mouse_pos):
+                        return "menu"
+                    elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
+                        return play()
         
-        # Menú de pausa
+        # Mostrar menú de pausa si está activo
         if pausado:
             boton_continuar, boton_reiniciar, boton_menu = mostrar_menu_pausa(pantalla)
 
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if boton_continuar.checkForInput(mouse_pos):
-                    pausado = False
-                elif boton_menu.checkForInput(mouse_pos):
-                    return "menu"
-                elif boton_reiniciar.checkForInput(mouse_pos):
-                    return play()
-        
+        #mostrar vidas en pantalla
+        texto_vidas = get_font(25).render(f"Vidas: {vidas}", True, "White")
+        pantalla.blit(texto_vidas, (30, 30))
 
         pygame.display.flip()
         clock.tick(60)
-        continue
 
