@@ -7,6 +7,7 @@ from config import pantalla, get_font
 from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
 from game_over import game_over
+
 #inicio para pygame
 pygame.init()
 
@@ -42,57 +43,49 @@ def fade_in_total(pantalla, fondo, duracion=1000):
 
 # Pantalla principal del juego para jugar
 def play():
-    boton_continuar = boton_reiniciar = boton_menu = None
-    #nombre de la ventana
+    from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
     pygame.display.set_caption("Play")
-    #zoom, gravedad, velocidad vertical del personaje
     zoom = 1.5
     gravedad = 0.4
     vel_y = 0
-    #variable para verificar si el personaje esta "en el suelo" del mapa (respeta colisiones)
     en_el_suelo = False
+    vidas = 3
+    pausado = False
 
-    nombre = selection(pantalla)  # "Masculino" o "Femenino"(pantalla de seleccion de personaje)
-
-    # Cargar fondo del mapa para transición
+    nombre = selection(pantalla)  # "Masculino" o "Femenino"
     fondo_mapa_preview = pygame.image.load("assets/fondos/Fondo.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
-    #transicion del mapa
     fade_in_total(pantalla, fondo_mapa_preview)
 
-    #cargar mapa y colisiones
     tmx_data = pytmx.util_pygame.load_pygame("mapas/nivel1_mapa.tmx")
-    #funcion que respeta las coliones aplicadas em tiled
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
+    basura = cargar_basura(tmx_data)
+    total_basura = len(basura)
+    recogidos = 0
+    portal = cargar_portal(tmx_data)
 
-    #boton de pausa
-    boton_pausa = Button(image=None, image_hover=None, pos=(1200, 50), text_input="⏸", font=get_font(40), base_color="White", hovering_color="Gray")
-
-    #ciclo que ayuda a mostar al personaje en el inicio del maoa (ayudado y aplicado por tiled)
     for obj in tmx_data.objects:
         if obj.name == "player_start":
             jugador = Personaje(nombre, obj.x, obj.y)
             break
-    #controlar los fps que se genran al juagar
+
+    boton_pausa = Button(image=None, image_hover=None, pos=(1200, 50), text_input="||", font=get_font(40), base_color="#FFFFFF", hovering_color="Gray")
     clock = pygame.time.Clock()
 
-    #variable para el meni de pausa
-    pausado = False
-    #variable para las vidas
-    vidas = 3
-
     while True:
-        pantalla.blit(nfondo, (0,0))
+        pantalla.blit(nfondo, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
         keys = pygame.key.get_pressed()
         velocidad = 4.2 / zoom
 
         if not pausado:
+            # Movimiento horizontal
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 jugador.rect.x -= velocidad
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 jugador.rect.x += velocidad
 
+            # Colisión horizontal
             for rect in colisiones:
                 if jugador.rect.colliderect(rect):
                     if keys[pygame.K_LEFT] or keys[pygame.K_a]:
@@ -100,13 +93,16 @@ def play():
                     elif keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                         jugador.rect.right = rect.left
 
+            # Salto
             if (keys[pygame.K_SPACE] or keys[pygame.K_w]) and en_el_suelo:
                 vel_y = -12.5 / zoom
                 en_el_suelo = False
 
+            # Gravedad y movimiento vertical
             vel_y += gravedad
             jugador.rect.y += vel_y
 
+            # Colisión vertical
             en_el_suelo = False
             for rect in colisiones:
                 if jugador.rect.colliderect(rect):
@@ -118,11 +114,14 @@ def play():
                         jugador.rect.top = rect.bottom
                         vel_y = 0
 
+            # Recolectar basura
+            recogidos += recolectar_items(jugador, basura)
+
+            # Verificar caída fuera del mapa
             map_height_px = tmx_data.height * tmx_data.tileheight
-            if jugador.rect.y > map_height_px:  # cayó fuera del mapa
+            if jugador.rect.y > map_height_px:
                 vidas -= 1
                 if vidas > 0:
-                    # Reinicia posición
                     for obj in tmx_data.objects:
                         if obj.name == "player_start":
                             jugador.rect.x = obj.x
@@ -130,19 +129,18 @@ def play():
                             vel_y = 0
                             break
                 else:
-                    return game_over(pantalla)  
+                    return game_over(pantalla)
 
+            # Cámara
             camara_x = jugador.rect.x - pantalla.get_width() // 2 + jugador.rect.width // 2
             camara_y = jugador.rect.y - pantalla.get_height() // 2 + jugador.rect.height // 2
-
             map_width_px = tmx_data.width * tmx_data.tilewidth
-            map_height_px = tmx_data.height * tmx_data.tileheight
             visible_width = pantalla.get_width() / zoom
             visible_height = pantalla.get_height() / zoom
-
             camara_x = max(0, min(camara_x, map_width_px - visible_width))
             camara_y = max(0, min(camara_y, map_height_px - visible_height))
 
+            # Dibujar mapa
             for layer in tmx_data.visible_layers:
                 if isinstance(layer, pytmx.TiledTileLayer):
                     for x, y, gid in layer:
@@ -158,14 +156,22 @@ def play():
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
 
+            # Dibujar basura y portal
+            dibujar_items(pantalla, basura, sprite_basura, camara_x, camara_y, zoom)
+            dibujar_portal(pantalla, portal, sprite_portal_abierto, recogidos, total_basura, camara_x, camara_y, zoom)
+
+            # Verificar victoria
+            if verificar_victoria(jugador, portal, recogidos, total_basura):
+                return victoria(pantalla)
+
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
 
-        # Botones menu pausa
+        # Botón de pausa
         boton_pausa.changeColor(mouse_pos)
         boton_pausa.update(pantalla)
 
-        # Eventos (siempre activos)
+        # Eventos
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return "salir"
@@ -175,22 +181,22 @@ def play():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_pausa.checkForInput(mouse_pos):
                     pausado = not pausado
-                elif pausado:
-                    if boton_continuar and boton_continuar.checkForInput(mouse_pos):
-                        pausado = False
-                    elif boton_menu and boton_menu.checkForInput(mouse_pos):
-                        return "menu"
-                    elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
-                        return play()
-        
-        # Mostrar menú de pausa si está activo
+
+        # Menú de pausa
         if pausado:
             boton_continuar, boton_reiniciar, boton_menu = mostrar_menu_pausa(pantalla)
+            if boton_continuar and boton_continuar.checkForInput(mouse_pos):
+                pausado = False
+            elif boton_menu and boton_menu.checkForInput(mouse_pos):
+                return "menu"
+            elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
+                return play()
 
-        #mostrar vidas en pantalla
+        # HUD
         texto_vidas = get_font(25).render(f"Vidas: {vidas}", True, "White")
         pantalla.blit(texto_vidas, (30, 30))
+        texto_basura = get_font(25).render(f"Basura: {recogidos}/{total_basura}", True, "White")
+        pantalla.blit(texto_basura, (30, 60))
 
         pygame.display.flip()
         clock.tick(60)
-

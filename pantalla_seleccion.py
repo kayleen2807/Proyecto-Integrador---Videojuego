@@ -38,8 +38,8 @@ def menu_prin():
         pantalla.blit(fondo, (0,0))
         mouse_pos = pygame.mouse.get_pos()
 
-        title = pygame.image.load("assets/title.png")
-        pantalla.blit(title, (320, 5))
+        title = pygame.image.load("assets/menuu.png")
+        pantalla.blit(title, (300, 5))
 
         #botones play, opciones y salir
         boton_play = Button(image=pygame.image.load("assets/button_play.png"), image_hover=pygame.image.load("assets/hover_play.png"), pos=(650, 300), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
