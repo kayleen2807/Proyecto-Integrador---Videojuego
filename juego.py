@@ -41,7 +41,7 @@ def fade_in_total(pantalla, fondo, duracion=1000):
         pygame.display.flip()
         alpha -= 255 / (duracion / clock.tick(60))
 
-# Pantalla principal del juego para jugar
+# Pantalla principal del juego:
 def play():
     from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
     pygame.display.set_caption("Play")
@@ -69,7 +69,8 @@ def play():
             jugador = Personaje(nombre, obj.x, obj.y)
             break
 
-    boton_pausa = Button(image=None, image_hover=None, pos=(1200, 50), text_input="||", font=get_font(40), base_color="#FFFFFF", hovering_color="Gray")
+    # Botón de pausa:
+    boton_pausa = Button(image = pygame.image.load("assets/pausa.png"), image_hover = None, pos=(1220, 50), text_input="", font=get_font(1), base_color="#FFFFFF", hovering_color="Gray")
     clock = pygame.time.Clock()
 
     while True:
