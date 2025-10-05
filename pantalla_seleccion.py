@@ -42,9 +42,9 @@ def menu_prin():
         pantalla.blit(title, (300, 5))
 
         #botones play, opciones y salir
-        boton_play = Button(image=pygame.image.load("assets/button_play.png"), image_hover=pygame.image.load("assets/hover_play.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-        boton_opciones = Button(image=pygame.image.load("assets/button_opts.png"), image_hover=pygame.image.load("assets/hover_opts.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-        boton_salir = Button(image=pygame.image.load("assets/button_exit.png"), image_hover=pygame.image.load("assets/hover_exit.png"), pos=(635, 570), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        boton_play = Button(image=pygame.image.load("assets/boton_menu/button_play.png"), image_hover=pygame.image.load("assets/boton_menu/hover_play.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        boton_opciones = Button(image=pygame.image.load("assets/boton_menu/button_opts.png"), image_hover=pygame.image.load("assets/boton_menu/hover_opts.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        boton_salir = Button(image=pygame.image.load("assets/boton_menu/button_exit.png"), image_hover=pygame.image.load("assets/boton_menu/hover_exit.png"), pos=(635, 570), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
 
         for boton in [boton_play, boton_opciones, boton_salir]:
             boton.changeColor(mouse_pos)

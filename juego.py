@@ -12,7 +12,7 @@ from game_over import game_over
 pygame.init()
 
 # Configuración de pantalla
-pantalla = pygame.display.set_mode((1280, 720)) #, pygame.FULLSCREEN)
+pantalla = pygame.display.set_mode((1280, 720) , pygame.FULLSCREEN)
 pygame.display.set_caption("Menu principal")
 
 #fondo para el menu principal
@@ -54,7 +54,7 @@ def play():
     vidas = 3
     pausado = False
 
-    nombre = selection(pantalla)  # "Masculino" o "Femenino"
+    nombre = selection(pantalla).lower()
     fondo_mapa_preview = pygame.image.load("assets/fondos/Fondo.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
@@ -72,7 +72,7 @@ def play():
             break
 
     # Botón de pausa:
-    boton_pausa = Button(image = pygame.image.load("assets/pausa.png"), image_hover = None, pos=(1220, 50), text_input="", font=get_font(1), base_color="#FFFFFF", hovering_color="Gray")
+    boton_pausa = Button(image = pygame.image.load("assets/boton_pausa/pausa.png"), image_hover = None, pos=(1220, 50), text_input="", font=get_font(1), base_color="#FFFFFF", hovering_color="Gray")
     clock = pygame.time.Clock()
 
     while True:
@@ -132,7 +132,8 @@ def play():
                             vel_y = 0
                             break
                 else:
-                    return game_over(pantalla)
+                    from game_over import pantalla_gameover
+                    return pantalla_gameover(pantalla, nombre)
 
             # Cámara
             camara_x = jugador.rect.x - pantalla.get_width() // 2 + jugador.rect.width // 2
@@ -165,15 +166,6 @@ def play():
             #dibujar vidas y basura
             dibujar_hud_vidas(pantalla, vidas)
             dibujar_hud_basura(pantalla, recogidos, total_basura)
-
-            # Verificar victoria
-
-            #print("Verificando victoria...")
-            #print("Jugador:", jugador.rect)
-            #print("Portal:", portal)
-            #print("Colisión:", jugador.rect.colliderect(portal))
-            #print("Recogidos:", recogidos)
-            #print("Total basura:", total_basura)
 
 
             if recogidos == total_basura:

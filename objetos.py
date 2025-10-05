@@ -57,8 +57,6 @@ def recolectar_items(jugador, basura):
 def verificar_victoria(jugador, portal, items_recogidos, total):
     colision = jugador.rect.colliderect(portal)
     completo = items_recogidos == total
-    print("Colisión dentro de función:", colision)
-    print("Basura completa:", completo)
     return colision and completo
 
 def victoria(pantalla):
@@ -81,7 +79,7 @@ def victoria(pantalla):
     pantalla.blit(texto, texto_rect)
 
     # Subtexto
-    subtexto = subfuente.render("Has limpiado el mundo. ¡Gracias!", True, texto_color)
+    subtexto = subfuente.render("Has limpiado el mundo :D ¡Excelemte!", True, texto_color)
     subtexto_rect = subtexto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 + 30))
     pantalla.blit(subtexto, subtexto_rect)
 
@@ -90,4 +88,4 @@ def victoria(pantalla):
     # pygame.mixer.music.play()
 
     pygame.display.flip()
-    pygame.time.wait(3000)  # Espera 3 segundos antes de volver al menú
+    pygame.time.wait(7000)  # Espera 3 segundos antes de volver al menú

@@ -1,6 +1,7 @@
 import pygame
 from juego import get_font
 from button import Button
+from animacion_gameover import reproducir_animacion
 def game_over(pantalla):
     from juego import play
     while True:
@@ -30,3 +31,8 @@ def game_over(pantalla):
 
         pygame.display.flip()
         pygame.time.Clock().tick(60)
+
+def pantalla_gameover(pantalla, personaje):
+    reproducir_animacion(pantalla, personaje)
+    pygame.time.wait(500)  # Pequeña pausa opcional
+    return game_over(pantalla)
