@@ -55,12 +55,39 @@ def recolectar_items(jugador, basura):
     return recogidos
 
 def verificar_victoria(jugador, portal, items_recogidos, total):
-    return portal and jugador.rect.colliderect(portal) and items_recogidos == total
+    colision = jugador.rect.colliderect(portal)
+    completo = items_recogidos == total
+    print("Colisión dentro de función:", colision)
+    print("Basura completa:", completo)
+    return colision and completo
 
 def victoria(pantalla):
-    fuente = pygame.font.Font(None, 60)
-    texto = fuente.render("¡Victoria!", True, (255, 255, 255))
-    pantalla.fill((0, 0, 0))
-    pantalla.blit(texto, (100, 100))
+    # Colores y fuentes
+    fondo_color = (30, 30, 60)  # Azul oscuro mágico
+    texto_color = (255, 255, 255)
+    sombra_color = (100, 100, 200)
+    fuente = pygame.font.Font(None, 80)
+    subfuente = pygame.font.Font(None, 40)
+
+    # Fondo
+    pantalla.fill(fondo_color)
+
+    # Texto principal con sombra
+    texto = fuente.render("¡Victoria!", True, texto_color)
+    sombra = fuente.render("¡Victoria!", True, sombra_color)
+    texto_rect = texto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 - 50))
+    sombra_rect = sombra.get_rect(center=(texto_rect.centerx + 4, texto_rect.centery + 4))
+    pantalla.blit(sombra, sombra_rect)
+    pantalla.blit(texto, texto_rect)
+
+    # Subtexto
+    subtexto = subfuente.render("Has limpiado el mundo. ¡Gracias!", True, texto_color)
+    subtexto_rect = subtexto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 + 30))
+    pantalla.blit(subtexto, subtexto_rect)
+
+    # Música (opcional)
+    # pygame.mixer.music.load("victoria.mp3")
+    # pygame.mixer.music.play()
+
     pygame.display.flip()
-    pygame.time.wait(3000)
+    pygame.time.wait(3000)  # Espera 3 segundos antes de volver al menú

@@ -43,6 +43,8 @@ def fade_in_total(pantalla, fondo, duracion=1000):
 
 # Pantalla principal del juego:
 def play():
+    from vidas import dibujar_hud_vidas
+    from basura import dibujar_hud_basura
     from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
     pygame.display.set_caption("Play")
     zoom = 1.5
@@ -160,10 +162,28 @@ def play():
             # Dibujar basura y portal
             dibujar_items(pantalla, basura, sprite_basura, camara_x, camara_y, zoom)
             dibujar_portal(pantalla, portal, sprite_portal_abierto, recogidos, total_basura, camara_x, camara_y, zoom)
+            #dibujar vidas y basura
+            dibujar_hud_vidas(pantalla, vidas)
+            dibujar_hud_basura(pantalla, recogidos, total_basura)
 
             # Verificar victoria
+
+            #print("Verificando victoria...")
+            #print("Jugador:", jugador.rect)
+            #print("Portal:", portal)
+            #print("Colisión:", jugador.rect.colliderect(portal))
+            #print("Recogidos:", recogidos)
+            #print("Total basura:", total_basura)
+
+
+            if recogidos == total_basura:
+                jugador.rect.x = portal.x
+                jugador.rect.y = portal.y
+
             if verificar_victoria(jugador, portal, recogidos, total_basura):
-                return victoria(pantalla)
+                print("¡Victoria detectada!")
+                victoria(pantalla)
+                return "menu"
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
@@ -193,11 +213,7 @@ def play():
             elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
                 return play()
 
-        # HUD
-        texto_vidas = get_font(25).render(f"Vidas: {vidas}", True, "White")
-        pantalla.blit(texto_vidas, (30, 30))
-        texto_basura = get_font(25).render(f"Basura: {recogidos}/{total_basura}", True, "White")
-        pantalla.blit(texto_basura, (30, 60))
+        
 
         pygame.display.flip()
         clock.tick(60)
