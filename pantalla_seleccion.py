@@ -1,6 +1,7 @@
 from config import pantalla, get_font
 from juego import fondo
 from button import Button
+from musica import reproducir_musica, detener_musica
 import pygame
 # Pantalla de inicio
 def inicio():
@@ -34,6 +35,7 @@ def inicio():
 def menu_prin():
     pygame.display.set_caption("Menu principal")
     while True:
+        reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.6)
         #diseño menu principal
         pantalla.blit(fondo, (0,0))
         mouse_pos = pygame.mouse.get_pos()
@@ -56,10 +58,12 @@ def menu_prin():
                 return "salir"
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_play.checkForInput(mouse_pos):
+                    detener_musica()
                     return "play"
                 elif boton_opciones.checkForInput(mouse_pos):
                     return "opciones"
                 elif boton_salir.checkForInput(mouse_pos):
+                    detener_musica()
                     return "salir"
 
         pygame.display.update()

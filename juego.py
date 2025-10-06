@@ -7,6 +7,7 @@ from config import pantalla, get_font
 from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
 from game_over import game_over
+from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
 
 #inicio para pygame
 pygame.init()
@@ -47,6 +48,7 @@ def play():
     from basura import dibujar_hud_basura
     from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
     pygame.display.set_caption("Play")
+    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
     zoom = 1.5
     gravedad = 0.4
     vel_y = 0
@@ -132,6 +134,7 @@ def play():
                             vel_y = 0
                             break
                 else:
+                    detener_musica()
                     from game_over import pantalla_gameover
                     return pantalla_gameover(pantalla, nombre)
 
@@ -174,6 +177,7 @@ def play():
 
             if verificar_victoria(jugador, portal, recogidos, total_basura):
                 print("¡Victoria detectada!")
+                detener_musica()
                 victoria(pantalla)
                 return "menu"
 
@@ -187,25 +191,36 @@ def play():
         # Eventos
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                detener_musica()
                 return "salir"
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pausado = not pausado
+                    if pausado:
+                        pausar_musica()
+                    else:
+                        continuar_musica()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_pausa.checkForInput(mouse_pos):
                     pausado = not pausado
+                    if pausado:
+                        pausar_musica()
+                    else:
+                        continuar_musica()
 
         # Menú de pausa
         if pausado:
             boton_continuar, boton_reiniciar, boton_menu = mostrar_menu_pausa(pantalla)
             if boton_continuar and boton_continuar.checkForInput(mouse_pos):
                 pausado = False
+                continuar_musica()
             elif boton_menu and boton_menu.checkForInput(mouse_pos):
+                detener_musica()
                 return "menu"
             elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
+                reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
                 return play()
 
-        
 
         pygame.display.flip()
         clock.tick(60)

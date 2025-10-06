@@ -2,6 +2,7 @@ import pygame
 from juego import get_font
 from button import Button
 from animacion_gameover import reproducir_animacion
+from musica import reproducir_musica, detener_musica
 def game_over(pantalla):
     from juego import play
     while True:
@@ -34,5 +35,6 @@ def game_over(pantalla):
 
 def pantalla_gameover(pantalla, personaje):
     reproducir_animacion(pantalla, personaje)
+    reproducir_musica("assets/musica/game_over.m3", volumen=0.7)
     pygame.time.wait(500)  # Pequeña pausa opcional
     return game_over(pantalla)

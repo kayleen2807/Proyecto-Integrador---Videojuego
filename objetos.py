@@ -1,5 +1,5 @@
 import pygame
-
+from musica import reproducir_musica, detener_musica
 # Cargar sprites
 sprite_basura = pygame.image.load("assets/basura/Basura.png").convert_alpha()
 sprite_portal_abierto = pygame.image.load("assets/portal.png").convert_alpha()
@@ -60,6 +60,7 @@ def verificar_victoria(jugador, portal, items_recogidos, total):
     return colision and completo
 
 def victoria(pantalla):
+    reproducir_musica("assets/musica/victoria.mp3", volumen=0.7)
     # Colores y fuentes
     fondo_color = (30, 30, 60)  # Azul oscuro mágico
     texto_color = (255, 255, 255)
@@ -82,10 +83,7 @@ def victoria(pantalla):
     subtexto = subfuente.render("Has limpiado el mundo :D ¡Excelemte!", True, texto_color)
     subtexto_rect = subtexto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 + 30))
     pantalla.blit(subtexto, subtexto_rect)
-
-    # Música (opcional)
-    # pygame.mixer.music.load("victoria.mp3")
-    # pygame.mixer.music.play()
+    detener_musica()
 
     pygame.display.flip()
-    pygame.time.wait(7000)  # Espera 3 segundos antes de volver al menú
+    pygame.time.wait(5000)  # Espera 3 segundos antes de volver al menú
