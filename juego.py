@@ -193,6 +193,7 @@ def play():
             if event.type == pygame.QUIT:
                 detener_musica()
                 return "salir"
+
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pausado = not pausado
@@ -200,6 +201,7 @@ def play():
                         pausar_musica()
                     else:
                         continuar_musica()
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_pausa.checkForInput(mouse_pos):
                     pausado = not pausado
@@ -208,18 +210,26 @@ def play():
                     else:
                         continuar_musica()
 
-        # Menú de pausa
+                if pausado:
+                    # Mostrar botones del menú de pausa
+                    boton_continuar, boton_reiniciar, boton_menu = mostrar_menu_pausa(pantalla)
+
+                    if boton_continuar and boton_continuar.checkForInput(mouse_pos):
+                        pausado = False
+                        continuar_musica()
+
+                    elif boton_menu and boton_menu.checkForInput(mouse_pos):
+                        detener_musica()
+                        return "menu"
+
+                    elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
+                        reproducir_musica("assets/musica/music_game.mp3", volumen=0.5)
+                        return play()
+
+        # Renderizado constante del menú de pausa
         if pausado:
             boton_continuar, boton_reiniciar, boton_menu = mostrar_menu_pausa(pantalla)
-            if boton_continuar and boton_continuar.checkForInput(mouse_pos):
-                pausado = False
-                continuar_musica()
-            elif boton_menu and boton_menu.checkForInput(mouse_pos):
-                detener_musica()
-                return "menu"
-            elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
-                reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
-                return play()
+
 
 
         pygame.display.flip()
