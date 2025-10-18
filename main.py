@@ -1,7 +1,10 @@
 from pantalla_seleccion import inicio, menu_prin, opciones
 from pantalla_niveles import pantalla_seleccion_nivel
 from selection_screen import selection
-from juego import play, pantalla
+from juego import pantalla
+from nivel1 import jugar_nivel1
+from nivel2 import jugar_nivel2
+from nivel3 import jugar_nivel3
 import pygame, sys
 
 # Bucle principal del juego
@@ -35,7 +38,12 @@ def main():
             pantalla_actual = "play"
 
         elif pantalla_actual == "play":
-            resultado = play(nivel_seleccionado, personaje)
+            if nivel_seleccionado == 1:
+                resultado = jugar_nivel1(pantalla, personaje)
+            elif nivel_seleccionado == 2:
+                resultado = jugar_nivel2(pantalla, personaje)
+            elif nivel_seleccionado == 3:
+                resultado = jugar_nivel3(pantalla, personaje)
             if resultado == "victoria":
                 pantalla_actual = "menu"
             elif resultado == "game_over":

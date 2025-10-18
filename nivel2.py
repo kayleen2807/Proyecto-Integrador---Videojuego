@@ -1,8 +1,16 @@
+import pygame, pytmx, sys
+from selection_screen import selection
+from button import Button
+from config import pantalla, get_font
+from selection_player import Personaje
+from pause_menu import mostrar_menu_pausa
+from game_over import pantalla_gameover
+from juego import fade_in_total, nfondo
+from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
+
 # Pantalla principal del juego:
 def jugar_nivel2(pantalla, personaje):
-    print("Nivel seleccionado:", nivel)
-    print("Personaje elegido:", personaje)
-
+    
     from vidas import dibujar_hud_vidas
     from basura import dibujar_hud_basura
     from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
