@@ -13,12 +13,12 @@ def mostrar_menu_pausa(pantalla):
     
     #texto pausa
     texto_pausa = get_font(50).render("PAUSE", True, "White")
-    pantalla.blit(texto_pausa, texto_pausa.get_rect(center=(650, 80)))
+    pantalla.blit(texto_pausa, texto_pausa.get_rect(center=(650, 100)))
 
     #botones para elmenu de pausa
-    boton_continuar = Button(image=pygame.image.load("assets/boton_pausa/Resume.png"), image_hover=pygame.image.load("assets/boton_pausa/hover_resume.png"), pos=(650, 190), text_input=".", font=get_font(1), base_color="White", hovering_color="Green")
-    boton_reiniciar = Button(image=pygame.image.load("assets/boton_pausa/Restart.png"), image_hover=pygame.image.load("assets/boton_pausa/hover_restart.png"), pos=(650, 370), text_input=".", font=get_font(1), base_color="White", hovering_color="Orange")
-    boton_menu = Button(image=pygame.image.load("assets/boton_pausa/Quit.png"), image_hover=pygame.image.load("assets/boton_pausa/hover_quit.png"), pos=(640, 550), text_input=".", font=get_font(1), base_color="White", hovering_color="Red")
+    boton_continuar = Button(image=pygame.image.load("assets/boton_pausa/Resume_icono.png"), image_hover=pygame.image.load("assets/boton_pausa/Resume_hover.png"), pos=(645, 250), text_input=".", font=get_font(1), base_color="White", hovering_color="Green")
+    boton_reiniciar = Button(image=pygame.image.load("assets/boton_pausa/Restart_icono.png"), image_hover=pygame.image.load("assets/boton_pausa/Restart_hover.png"), pos=(650, 400), text_input=".", font=get_font(1), base_color="White", hovering_color="Orange")
+    boton_menu = Button(image=pygame.image.load("assets/boton_pausa/Quit_icono.png"), image_hover=pygame.image.load("assets/boton_pausa/Quit_hover.png"), pos=(645, 550), text_input=".", font=get_font(1), base_color="White", hovering_color="Red")
 
     for boton in [boton_continuar, boton_reiniciar, boton_menu]:
         boton.changeColor(mouse_pos)

@@ -43,7 +43,10 @@ def fade_in_total(pantalla, fondo, duracion=1000):
         alpha -= 255 / (duracion / clock.tick(60))
 
 # Pantalla principal del juego:
-def play():
+def play(nivel, personaje):
+    print("Nivel seleccionado:", nivel)
+    print("Personaje elegido:", personaje)
+
     from vidas import dibujar_hud_vidas
     from basura import dibujar_hud_basura
     from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
@@ -56,7 +59,7 @@ def play():
     vidas = 3
     pausado = False
 
-    nombre = selection(pantalla).lower()
+    nombre = personaje.lower()
     fondo_mapa_preview = pygame.image.load("assets/fondos/Fondo.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
@@ -179,7 +182,7 @@ def play():
                 print("¡Victoria detectada!")
                 detener_musica()
                 victoria(pantalla)
-                return "menu"
+                return "victoria"
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
@@ -224,7 +227,7 @@ def play():
 
                     elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
                         reproducir_musica("assets/musica/music_game.mp3", volumen=0.5)
-                        return play()
+                        return "reiniciar"
 
         # Renderizado constante del menú de pausa
         if pausado:

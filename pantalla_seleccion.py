@@ -59,7 +59,7 @@ def menu_prin():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_play.checkForInput(mouse_pos):
                     detener_musica()
-                    return "play"
+                    return "nivel"
                 elif boton_opciones.checkForInput(mouse_pos):
                     return "opciones"
                 elif boton_salir.checkForInput(mouse_pos):

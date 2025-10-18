@@ -4,7 +4,6 @@ from button import Button
 from animacion_gameover import reproducir_animacion
 from musica import reproducir_musica, detener_musica
 def game_over(pantalla):
-    from juego import play
     while True:
         pantalla.fill((0, 0, 0))
 
@@ -28,7 +27,7 @@ def game_over(pantalla):
                 if boton_menu.checkForInput(mouse_pos):
                     return "menu"
                 elif boton_reiniciar.checkForInput(mouse_pos):
-                    return play()
+                    return "reiniciar"
 
         pygame.display.flip()
         pygame.time.Clock().tick(60)
