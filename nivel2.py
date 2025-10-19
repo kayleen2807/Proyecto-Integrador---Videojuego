@@ -12,8 +12,6 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 def jugar_nivel2(pantalla, personaje):
     
     from vidas import dibujar_hud_vidas
-    from basura import dibujar_hud_basura
-    from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
     zoom = 1.5
@@ -24,16 +22,12 @@ def jugar_nivel2(pantalla, personaje):
     pausado = False
 
     nombre = personaje.lower()
-    fondo_mapa_preview = pygame.image.load("assets/fondos/Fondo.png").convert()
+    fondo_mapa_preview = pygame.image.load("assets/fondos/fondo_nvl2.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
 
-    tmx_data = pytmx.util_pygame.load_pygame("mapas/nivel1_mapa.tmx")
+    tmx_data = pytmx.util_pygame.load_pygame("mapas/Nvl2.tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
-    basura = cargar_basura(tmx_data)
-    total_basura = len(basura)
-    recogidos = 0
-    portal = cargar_portal(tmx_data)
 
     for obj in tmx_data.objects:
         if obj.name == "player_start":
@@ -45,7 +39,7 @@ def jugar_nivel2(pantalla, personaje):
     clock = pygame.time.Clock()
 
     while True:
-        pantalla.blit(nfondo, (0, 0))
+        pantalla.blit(fondo_mapa_preview, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
         keys = pygame.key.get_pressed()
         velocidad = 4.2 / zoom
@@ -86,8 +80,6 @@ def jugar_nivel2(pantalla, personaje):
                         jugador.rect.top = rect.bottom
                         vel_y = 0
 
-            # Recolectar basura
-            recogidos += recolectar_items(jugador, basura)
 
             # Verificar caída fuera del mapa
             map_height_px = tmx_data.height * tmx_data.tileheight
@@ -129,24 +121,10 @@ def jugar_nivel2(pantalla, personaje):
                                 int((x * tmx_data.tilewidth - camara_x) * zoom),
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
-
-            # Dibujar basura y portal
-            dibujar_items(pantalla, basura, sprite_basura, camara_x, camara_y, zoom)
-            dibujar_portal(pantalla, portal, sprite_portal_abierto, recogidos, total_basura, camara_x, camara_y, zoom)
-            #dibujar vidas y basura
+            
+            # Dibujar HUD de vidas
             dibujar_hud_vidas(pantalla, vidas)
-            dibujar_hud_basura(pantalla, recogidos, total_basura)
 
-
-            if recogidos == total_basura:
-                jugador.rect.x = portal.x
-                jugador.rect.y = portal.y
-
-            if verificar_victoria(jugador, portal, recogidos, total_basura):
-                print("¡Victoria detectada!")
-                detener_musica()
-                victoria(pantalla)
-                return "victoria"
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
