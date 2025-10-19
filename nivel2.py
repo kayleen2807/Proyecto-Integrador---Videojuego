@@ -26,7 +26,7 @@ def jugar_nivel2(pantalla, personaje):
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
 
-    tmx_data = pytmx.util_pygame.load_pygame("mapas/Nvl2.tmx")
+    tmx_data = pytmx.util_pygame.load_pygame("mapas/Nvl2(c).tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
 
     for obj in tmx_data.objects:
