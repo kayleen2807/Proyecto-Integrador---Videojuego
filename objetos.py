@@ -1,7 +1,7 @@
 import pygame
 from musica import reproducir_musica, detener_musica
 # Cargar sprites
-sprite_basura = pygame.image.load("assets/basura/Basura.png").convert_alpha()
+sprite_basura = pygame.image.load("assets/basura/basura 2.png").convert_alpha()
 sprite_portal_abierto = pygame.image.load("assets/portal.png").convert_alpha()
 
 def cargar_basura(tmx_data):
