@@ -16,6 +16,7 @@ pygame.display.set_caption("Menu principal")
 
 
 #fondo para el nivel 1
+
 nfondo = pygame.image.load("assets/fondos/Fondo.png")
 
 # Función para cargar fuente
