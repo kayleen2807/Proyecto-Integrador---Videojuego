@@ -1,5 +1,4 @@
 from config import pantalla, get_font
-from juego import fondo
 from button import Button
 from musica import reproducir_musica, detener_musica
 import pygame
@@ -34,19 +33,34 @@ def inicio():
 # Menú principal
 def menu_prin():
     pygame.display.set_caption("Menu principal")
+    # Cargar frames del fondo animado
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    fondos_animados = []
+    total_frames = 4
+    for i in range(total_frames):
+        frame = pygame.image.load(f"assets/fondos/menu_{i}.png").convert()
+        frame_escalado = pygame.transform.scale(frame, (pantalla_ancho, pantalla_alto))
+        fondos_animados.append(frame_escalado)
+
+    frame_actual = 0
+    reloj = pygame.time.Clock()
+
+    # Bucle del menú
     while True:
+        #menu animado
+        pantalla.blit(fondos_animados[frame_actual], (0, 0))
+        frame_actual = (frame_actual + 1) % total_frames
+    
         reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.6)
-        #diseño menu principal
-        pantalla.blit(fondo, (0,0))
         mouse_pos = pygame.mouse.get_pos()
 
-        title = pygame.image.load("assets/menuu.png")
-        pantalla.blit(title, (300, 5))
+        title = pygame.image.load("assets/gatods.png")
+        pantalla.blit(title, (470, 100))
 
         #botones play, opciones y salir
-        boton_play = Button(image=pygame.image.load("assets/boton_menu/button_play.png"), image_hover=pygame.image.load("assets/boton_menu/hover_play.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-        boton_opciones = Button(image=pygame.image.load("assets/boton_menu/button_opts.png"), image_hover=pygame.image.load("assets/boton_menu/hover_opts.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-        boton_salir = Button(image=pygame.image.load("assets/boton_menu/button_exit.png"), image_hover=pygame.image.load("assets/boton_menu/hover_exit.png"), pos=(635, 570), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        boton_play = Button(image=pygame.image.load("assets/boton_menu/boton_ jugar.png"), image_hover=pygame.image.load("assets/boton_menu/boton_ jugar_h.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        boton_opciones = Button(image=pygame.image.load("assets/boton_menu/boton_opciones.png"), image_hover=pygame.image.load("assets/boton_menu/boton_opciones_h.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        boton_salir = Button(image=pygame.image.load("assets/boton_menu/boton_ Salir.png"), image_hover=pygame.image.load("assets/boton_menu/boton_ Salir_h.png"), pos=(652, 558), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
 
         for boton in [boton_play, boton_opciones, boton_salir]:
             boton.changeColor(mouse_pos)
@@ -67,6 +81,7 @@ def menu_prin():
                     return "salir"
 
         pygame.display.update()
+        reloj.tick(3)  # Controla la velocidad de animación 
 
 # Pantalla de opciones
 def opciones():

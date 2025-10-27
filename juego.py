@@ -14,12 +14,8 @@ pygame.init()
 pantalla = pygame.display.set_mode((1280, 720) , pygame.FULLSCREEN)
 pygame.display.set_caption("Menu principal")
 
-#fondo para el menu principal
-fondo = pygame.image.load("assets/fondos/menu_fondo.png").convert()
-fondo = pygame.transform.scale(fondo, pantalla.get_size())
 
 #fondo para el nivel 1
-pantalla.blit(fondo, (0, 0))
 
 nfondo = pygame.image.load("assets/fondos/Fondo.png")
 
