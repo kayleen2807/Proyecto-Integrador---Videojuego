@@ -3,6 +3,8 @@ from musica import reproducir_musica, detener_musica
 # Cargar sprites
 sprite_basura = pygame.image.load("assets/basura/basura 2.png").convert_alpha()
 sprite_portal_abierto = pygame.image.load("assets/portal.png").convert_alpha()
+sprite_drone = pygame.image.load("assets/dron.png").convert_alpha()
+sprite_boton = pygame.image.load("assets/boton.png").convert_alpha()
 
 def cargar_basura(tmx_data):
     basura = []
@@ -87,3 +89,17 @@ def victoria(pantalla):
 
     pygame.display.flip()
     pygame.time.wait(5000)  # Espera 3 segundos antes de volver al menú
+
+def cargar_drones(tmx_data):
+    drones = []
+    for obj in tmx_data.objects:
+        if obj.name == "d":
+            rect = pygame.Rect(obj.x - obj.width // 2, obj.y - obj.height, obj.width, obj.height)
+            drones.append(rect)
+    return drones
+
+def cargar_boton(tmx_data):
+    for obj in tmx_data.objects:
+        if obj.name == "b":
+            return pygame.Rect(obj.x, obj.y, obj.width, obj.height)
+    return None

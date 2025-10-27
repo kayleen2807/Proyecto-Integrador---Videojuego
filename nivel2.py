@@ -10,7 +10,7 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 
 # Pantalla principal del juego:
 def jugar_nivel2(pantalla, personaje):
-    
+    from objetos import dibujar_items, sprite_drone, cargar_drones, cargar_boton, sprite_boton
     from vidas import dibujar_hud_vidas
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
@@ -28,6 +28,8 @@ def jugar_nivel2(pantalla, personaje):
 
     tmx_data = pytmx.util_pygame.load_pygame("mapas/Nvl2(c).tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
+    drones = cargar_drones(tmx_data)
+    boton = cargar_boton(tmx_data)
 
     for obj in tmx_data.objects:
         if obj.name == "player_start":
@@ -122,9 +124,12 @@ def jugar_nivel2(pantalla, personaje):
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
             
+            # Dibujar drones
+            dibujar_items(pantalla, drones, sprite_drone, camara_x, camara_y, zoom)
+            # Dibujar botón
+            dibujar_items(pantalla, [boton], sprite_boton, camara_x, camara_y, zoom)
             # Dibujar HUD de vidas
             dibujar_hud_vidas(pantalla, vidas)
-
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
