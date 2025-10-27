@@ -5,6 +5,7 @@ sprite_basura = pygame.image.load("assets/basura/basura 2.png").convert_alpha()
 sprite_portal_abierto = pygame.image.load("assets/portal.png").convert_alpha()
 sprite_drone = pygame.image.load("assets/dron.png").convert_alpha()
 sprite_boton = pygame.image.load("assets/boton.png").convert_alpha()
+sprite_nube = pygame.image.load("assets/nube.png").convert_alpha()
 
 def cargar_basura(tmx_data):
     basura = []
@@ -103,3 +104,11 @@ def cargar_boton(tmx_data):
         if obj.name == "b":
             return pygame.Rect(obj.x, obj.y, obj.width, obj.height)
     return None
+
+def cargar_nubes(tmx_data):
+    nubes = []
+    for obj in tmx_data.objects:
+        if obj.name == "n":
+            rect = pygame.Rect(obj.x - obj.width // 2, obj.y - obj.height, obj.width, obj.height)
+            nubes.append(rect)
+    return nubes

@@ -64,11 +64,11 @@
 </data>
  </layer>
  <objectgroup id="6" name="Drones">
-  <object id="133" name="d" x="514.411" y="1258.35" width="32" height="32"/>
-  <object id="135" name="d" x="1683.79" y="1155.62" width="32" height="32"/>
-  <object id="136" name="d" x="1616.04" y="578.464" width="32" height="32"/>
+  <object id="133" name="d" x="514.411" y="1284.88" width="32" height="32"/>
+  <object id="135" name="d" x="1685.52" y="1196" width="32" height="32"/>
+  <object id="136" name="d" x="1618.92" y="611.918" width="32" height="32"/>
   <object id="137" name="d" x="796.967" y="628.316" width="32" height="32"/>
-  <object id="140" name="d" x="268.523" y="41.987" width="32" height="32"/>
+  <object id="140" name="d" x="269.677" y="79.4791" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="7" name="Decoración"/>
  <layer id="2" name="Background" width="70" height="50">
@@ -262,12 +262,12 @@
   <object id="131" x="160.017" y="127.932" width="32.0848" height="224.186"/>
  </objectgroup>
  <objectgroup id="9" name="Nubes">
-  <object id="142" name="n" x="691.091" y="1373.21" width="32" height="32"/>
-  <object id="143" name="n" x="1667.19" y="1279.07" width="32" height="32"/>
-  <object id="144" name="n" x="2163.26" y="798.52" width="32" height="32"/>
-  <object id="145" name="n" x="989.221" y="716.21" width="32" height="32"/>
-  <object id="146" name="n" x="560.913" y="151.042" width="32" height="32"/>
-  <object id="147" name="n" x="1495.2" y="378.486" width="32" height="32"/>
+  <object id="142" name="n" x="699.166" y="1420.51" width="32" height="32"/>
+  <object id="143" name="n" x="1674.11" y="1329.25" width="32" height="32"/>
+  <object id="144" name="n" x="2169.6" y="844.087" width="32" height="32"/>
+  <object id="145" name="n" x="991.731" y="763.963" width="32" height="32"/>
+  <object id="146" name="n" x="562.067" y="186.804" width="32" height="32"/>
+  <object id="147" name="n" x="1495.78" y="427.514" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="Boton">
   <object id="148" name="b" x="97.6251" y="66.3077" width="32" height="32"/>
