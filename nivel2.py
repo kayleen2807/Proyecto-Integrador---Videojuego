@@ -11,6 +11,7 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 # Pantalla principal del juego:
 def jugar_nivel2(pantalla, personaje):
     from objetos import dibujar_items, sprite_drone, cargar_drones, cargar_boton, sprite_boton, cargar_nubes, sprite_nube
+    from objetos import dibujar_items, sprite_drone, cargar_drones, cargar_boton, sprite_boton
     from vidas import dibujar_hud_vidas
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
