@@ -12,7 +12,6 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 def jugar_nivel3(pantalla, personaje):
 
     from vidas import dibujar_hud_vidas
-    from basura import dibujar_hud_basura
     from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
@@ -30,10 +29,8 @@ def jugar_nivel3(pantalla, personaje):
 
     tmx_data = pytmx.util_pygame.load_pygame("mapas/nivel1_mapa.tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
-    basura = cargar_basura(tmx_data)
-    total_basura = len(basura)
     recogidos = 0
-    portal = cargar_portal(tmx_data)
+
 
     for obj in tmx_data.objects:
         if obj.name == "player_start":
@@ -86,9 +83,6 @@ def jugar_nivel3(pantalla, personaje):
                         jugador.rect.top = rect.bottom
                         vel_y = 0
 
-            # Recolectar basura
-            recogidos += recolectar_items(jugador, basura)
-
             # Verificar caída fuera del mapa
             map_height_px = tmx_data.height * tmx_data.tileheight
             if jugador.rect.y > map_height_px:
@@ -130,19 +124,11 @@ def jugar_nivel3(pantalla, personaje):
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
 
-            # Dibujar basura y portal
-            dibujar_items(pantalla, basura, sprite_basura, camara_x, camara_y, zoom)
-            dibujar_portal(pantalla, portal, sprite_portal_abierto, recogidos, total_basura, camara_x, camara_y, zoom)
             #dibujar vidas y basura
             dibujar_hud_vidas(pantalla, vidas)
-            dibujar_hud_basura(pantalla, recogidos, total_basura)
 
-
-            if recogidos == total_basura:
-                jugador.rect.x = portal.x
-                jugador.rect.y = portal.y
-
-            if verificar_victoria(jugador, portal, recogidos, total_basura):
+            #en proceso
+            if verificar_victoria(jugador):
                 print("¡Victoria detectada!")
                 detener_musica()
                 victoria(pantalla)
