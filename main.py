@@ -19,14 +19,15 @@ def main():
             pantalla_actual = inicio()
 
         elif pantalla_actual == "menu":
-            pantalla_actual = menu_prin()
+            pantalla_actual = menu_prin(pantalla)
 
-        elif pantalla_actual == "nivel":  # Nueva pantalla
+        elif pantalla_actual == "nivel":  # Nueva pantalla (seleccion de niveles)
             nivel_elegido = pantalla_seleccion_nivel(pantalla)
             if nivel_elegido == "salir":
                 pantalla_actual = "salir"
+            elif nivel_elegido == "menu":
+                pantalla_actual = "menu"
             else:
-                # Guarda el nivel elegido y pasa a selección de personaje
                 nivel_seleccionado = nivel_elegido
                 pantalla_actual = "selection"
 

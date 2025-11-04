@@ -31,7 +31,7 @@ def inicio():
         pygame.display.update()
 
 # Menú principal
-def menu_prin():
+def menu_prin(pantalla):
     pygame.display.set_caption("Menu principal")
     # Cargar frames del fondo animado
     pantalla_ancho, pantalla_alto = pantalla.get_size()
@@ -42,6 +42,14 @@ def menu_prin():
         frame_escalado = pygame.transform.scale(frame, (pantalla_ancho, pantalla_alto))
         fondos_animados.append(frame_escalado)
 
+    reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.6)
+    title = pygame.image.load("assets/gatods.png")
+
+    #botones play, opciones y salir
+    boton_play = Button(image=pygame.image.load("assets/boton_menu/boton_jugar.png"), image_hover=pygame.image.load("assets/boton_menu/boton_jugar_h.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_opciones = Button(image=pygame.image.load("assets/boton_menu/boton_opciones.png"), image_hover=pygame.image.load("assets/boton_menu/boton_opciones_h.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_salir = Button(image=pygame.image.load("assets/boton_menu/boton_Salir.png"), image_hover=pygame.image.load("assets/boton_menu/boton_Salir_h.png"), pos=(652, 558), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+
     frame_actual = 0
     reloj = pygame.time.Clock()
 
@@ -50,17 +58,9 @@ def menu_prin():
         #menu animado
         pantalla.blit(fondos_animados[frame_actual], (0, 0))
         frame_actual = (frame_actual + 1) % total_frames
-    
-        reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.6)
+        pantalla.blit(title, (350, 70))
         mouse_pos = pygame.mouse.get_pos()
 
-        title = pygame.image.load("assets/gatods.png")
-        pantalla.blit(title, (470, 100))
-
-        #botones play, opciones y salir
-        boton_play = Button(image=pygame.image.load("assets/boton_menu/boton_ jugar.png"), image_hover=pygame.image.load("assets/boton_menu/boton_ jugar_h.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-        boton_opciones = Button(image=pygame.image.load("assets/boton_menu/boton_opciones.png"), image_hover=pygame.image.load("assets/boton_menu/boton_opciones_h.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-        boton_salir = Button(image=pygame.image.load("assets/boton_menu/boton_ Salir.png"), image_hover=pygame.image.load("assets/boton_menu/boton_ Salir_h.png"), pos=(652, 558), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
 
         for boton in [boton_play, boton_opciones, boton_salir]:
             boton.changeColor(mouse_pos)
@@ -73,6 +73,13 @@ def menu_prin():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_play.checkForInput(mouse_pos):
                     detener_musica()
+                    for alpha in range(0, 255, 5):
+                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
+                        overlay.set_alpha(alpha)
+                        overlay.fill((0, 0, 0))
+                        pantalla.blit(overlay, (0, 0))
+                        pygame.display.update()
+                        pygame.time.delay(10)
                     return "nivel"
                 elif boton_opciones.checkForInput(mouse_pos):
                     return "opciones"
