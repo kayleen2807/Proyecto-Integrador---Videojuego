@@ -12,22 +12,22 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 def jugar_nivel3(pantalla, personaje):
 
     from vidas import dibujar_hud_vidas
-    from objetos import recolectar_items, dibujar_items, dibujar_portal, sprite_basura, sprite_portal_abierto, verificar_victoria, cargar_basura, cargar_portal, victoria
+    from objetos import verificar_victoria, victoria
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
     zoom = 1.5
-    gravedad = 0.4
+    gravedad = 0.6
     vel_y = 0
     en_el_suelo = False
     vidas = 3
     pausado = False
 
     nombre = personaje.lower()
-    fondo_mapa_preview = pygame.image.load("assets/fondos/Fondo.png").convert()
+    fondo_mapa_preview = pygame.image.load("assets/fondos/cuevaa.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
 
-    tmx_data = pytmx.util_pygame.load_pygame("mapas/nivel1_mapa.tmx")
+    tmx_data = pytmx.util_pygame.load_pygame("mapas/nivel33.tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
     recogidos = 0
 
@@ -42,10 +42,10 @@ def jugar_nivel3(pantalla, personaje):
     clock = pygame.time.Clock()
 
     while True:
-        pantalla.blit(nfondo, (0, 0))
+        pantalla.blit(fondo_mapa_preview, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
         keys = pygame.key.get_pressed()
-        velocidad = 4.2 / zoom
+        velocidad = 5.2 / zoom
 
         if not pausado:
             # Movimiento horizontal
@@ -127,12 +127,6 @@ def jugar_nivel3(pantalla, personaje):
             #dibujar vidas y basura
             dibujar_hud_vidas(pantalla, vidas)
 
-            #en proceso
-            if verificar_victoria(jugador):
-                print("¡Victoria detectada!")
-                detener_musica()
-                victoria(pantalla)
-                return "victoria"
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
