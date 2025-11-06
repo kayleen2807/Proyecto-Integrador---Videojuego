@@ -66,14 +66,6 @@
 10,10,10,10,10,11,0,0,9,10,10,11,0,0,0,0,9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,0,0,0,0,9,10,10,10,10,10,10,10,10,10,10,10,11,0,0,9,10,10,10,10,10,10,10,10,10,10,10,10
 </data>
  </layer>
- <objectgroup id="6" name="Drones">
-  <object id="133" name="d" x="514.411" y="1252.08" width="32" height="32"/>
-  <object id="135" name="d" x="1685.52" y="1162.44" width="32" height="32"/>
-  <object id="137" name="d" x="796.967" y="628.316" width="32" height="32"/>
-  <object id="140" name="d" x="269.677" y="79.4791" width="32" height="32"/>
-  <object id="136" name="d" x="1616.8" y="589.142" width="32" height="32"/>
-  <object id="137" name="d" x="796.967" y="628.316" width="32" height="32"/>
- </objectgroup>
  <objectgroup id="7" name="Decoración"/>
  <layer id="2" name="Background" width="70" height="50">
   <data encoding="csv">
@@ -264,16 +256,5 @@
   <object id="129" x="223.935" y="191.894" width="32.1593" height="160.206"/>
   <object id="130" x="192.034" y="159.881" width="31.9491" height="192.169"/>
   <object id="131" x="160.017" y="127.932" width="32.0848" height="224.186"/>
- </objectgroup>
- <objectgroup id="9" name="Nubes">
-  <object id="142" name="n" x="699.166" y="1420.51" width="32" height="32"/>
-  <object id="143" name="n" x="1674.11" y="1329.25" width="32" height="32"/>
-  <object id="144" name="n" x="2169.6" y="844.087" width="32" height="32"/>
-  <object id="145" name="n" x="991.731" y="763.963" width="32" height="32"/>
-  <object id="146" name="n" x="562.067" y="186.804" width="32" height="32"/>
-  <object id="147" name="n" x="1495.78" y="427.514" width="32" height="32"/>
- </objectgroup>
- <objectgroup id="10" name="Boton">
-  <object id="148" name="b" x="97.6251" y="66.3077" width="32" height="32"/>
  </objectgroup>
 </map>
