@@ -41,34 +41,58 @@ def verificar_victoria(jugador, items_recogidos, total):
     completo = items_recogidos == total
     return completo
 
-def victoria(pantalla):
+def victoria(pantalla, personaje):
+    # Cargar animación del personaje
+    ruta_frames = f"assets/victoria/nivel1/{personaje}/"
+    total_frames = 7  # ajusta según tu animación
+    frames = []
+
+    for i in range(total_frames):
+        frame = pygame.image.load(f"{ruta_frames}lv1_{i}.png").convert_alpha()
+        frame = pygame.transform.scale(frame, pantalla.get_size())
+        frames.append(frame)
+
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    for alpha in range(0, 255, 5):
+                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
+                        overlay.set_alpha(alpha)
+                        overlay.fill((0, 0, 0))
+                        pantalla.blit(overlay, (0, 0))
+                        pygame.display.update()
+                        pygame.time.delay(10)
+
+    # Reproducir animación una sola vez
+    for frame in frames:
+        pantalla.blit(frame, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
+
+    
     reproducir_musica("assets/musica/victoria.mp3", volumen=0.7)
-    # Colores y fuentes
-    fondo_color = (30, 30, 60)  # Azul oscuro mágico
+    # Mostrar fondo final con texto
+    fondo_color = (30, 30, 60)
+    pantalla.fill(fondo_color)
+
     texto_color = (255, 255, 255)
     sombra_color = (100, 100, 200)
     fuente = pygame.font.Font(None, 80)
     subfuente = pygame.font.Font(None, 40)
 
-    # Fondo
-    pantalla.fill(fondo_color)
-
-    # Texto principal con sombra
     texto = fuente.render("¡Victoria!", True, texto_color)
     sombra = fuente.render("¡Victoria!", True, sombra_color)
     texto_rect = texto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 - 50))
     sombra_rect = sombra.get_rect(center=(texto_rect.centerx + 4, texto_rect.centery + 4))
+
+    subtexto = subfuente.render("Has limpiado el mundo :D ¡Excelente!", True, texto_color)
+    subtexto_rect = subtexto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 + 30))
+
     pantalla.blit(sombra, sombra_rect)
     pantalla.blit(texto, texto_rect)
-
-    # Subtexto
-    subtexto = subfuente.render("Has limpiado el mundo :D ¡Excelemte!", True, texto_color)
-    subtexto_rect = subtexto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 + 30))
     pantalla.blit(subtexto, subtexto_rect)
-    detener_musica()
 
-    pygame.display.flip()
-    pygame.time.wait(5000)  # Espera 3 segundos antes de volver al menú
+    pygame.display.update()
+    pygame.time.wait(3000)  # espera antes de volver al menú
+    detener_musica()
 
 def cargar_drones(tmx_data):
     drones = []

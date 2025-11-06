@@ -46,9 +46,9 @@ def menu_prin(pantalla):
     title = pygame.image.load("assets/gatods.png")
 
     #botones play, opciones y salir
-    boton_play = Button(image=pygame.image.load("assets/boton_menu/boton_jugar.png"), image_hover=pygame.image.load("assets/boton_menu/boton_jugar_h.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-    boton_opciones = Button(image=pygame.image.load("assets/boton_menu/boton_opciones.png"), image_hover=pygame.image.load("assets/boton_menu/boton_opciones_h.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-    boton_salir = Button(image=pygame.image.load("assets/boton_menu/boton_Salir.png"), image_hover=pygame.image.load("assets/boton_menu/boton_Salir_h.png"), pos=(652, 558), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_play = Button(image=pygame.image.load("assets/español/boton_menu/boton_jugar.png"), image_hover=pygame.image.load("assets/español/boton_menu/boton_jugar_h.png"), pos=(650, 280), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_opciones = Button(image=pygame.image.load("assets/español/boton_menu/boton_opciones.png"), image_hover=pygame.image.load("assets/español/boton_menu/boton_opciones_h.png"), pos=(650, 420), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_salir = Button(image=pygame.image.load("assets/español/boton_menu/boton_Salir.png"), image_hover=pygame.image.load("assets/español/boton_menu/boton_Salir_h.png"), pos=(652, 558), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
 
     frame_actual = 0
     reloj = pygame.time.Clock()
@@ -94,17 +94,38 @@ def menu_prin(pantalla):
 def opciones():
     pygame.display.set_caption("Opciones")
     while True:
+        fondo_mapa_preview = pygame.image.load("assets/opciones/fondo_opts.png").convert()
+        fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
+        pantalla.blit(fondo_mapa_preview, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
-        pantalla.fill("White")
 
-        #opciones (en proceso)
-        texto = get_font(15).render("Estas seran las opciones", True, "Black")
-        texto_rect = texto.get_rect(center=(640, 260))
-        pantalla.blit(texto, texto_rect)
+        opc = pygame.image.load("assets/opciones/opts.png")
+        pantalla.blit(opc, (550, 190))
 
-        boton_back = Button(image=None, image_hover=None, pos=(640, 460), text_input="BACK", font=get_font(15), base_color="Black", hovering_color="Blue")
+        lengua = pygame.image.load("assets/opciones/Lenguage.png")
+        pantalla.blit(lengua, (490, 300))
+        bandera1 = Button(image=pygame.image.load("assets/opciones/bandera_e.png"), image_hover=None, pos=(660, 300), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        bandera2 = Button(image=pygame.image.load("assets/opciones/bandera_i.png"), image_hover=None, pos=(760, 300), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        for bandera in [bandera1, bandera2]:
+            bandera.changeColor(mouse_pos)
+            bandera.update(pantalla)
+
+        music = pygame.image.load("assets/opciones/Music.png")
+        pantalla.blit(music, (490, 400))
+        icono1 = Button(image=pygame.image.load("assets/opciones/sonido.png"), image_hover=None, pos=(660, 400), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        icono2 = Button(image=pygame.image.load("assets/opciones/mute.png"), image_hover=None, pos=(760, 400), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+        for icono in [icono1, icono2]:
+            icono.changeColor(mouse_pos)
+            icono.update(pantalla)
+
+
+        boton_back = Button(image=pygame.image.load("assets/opciones/quit_opt.png"), image_hover=None, pos=(660, 560), text_input="BACK", font=get_font(1), base_color="Black", hovering_color="Blue")
         boton_back.changeColor(mouse_pos)
         boton_back.update(pantalla)
+
+        boton_control = Button(image=pygame.image.load("assets/opciones/controles.png"), image_hover=None, pos=(660, 480), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
+        boton_control.changeColor(mouse_pos)
+        boton_control.update(pantalla)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

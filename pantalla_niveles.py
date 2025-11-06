@@ -12,10 +12,10 @@ def pantalla_seleccion_nivel(pantalla):
     texto = fuente.render("Selecciona un nivel", True, (0, 0, 0))
     texto_rect = texto.get_rect(center=(pantalla.get_width() // 2, 110))
 
-    boton_nivel1 = Button(image=pygame.image.load("assets/botones_niveles/boton_nivel1.png"), image_hover=pygame.image.load("assets/botones_niveles/boton_nivel1_h.png"), pos=(650, 200), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-    boton_nivel2 = Button(image=pygame.image.load("assets/botones_niveles/boton_nivel2.png"), image_hover=pygame.image.load("assets/botones_niveles/boton_nivel2_h.png"), pos=(650, 320), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-    boton_nivel3 = Button(image=pygame.image.load("assets/botones_niveles/boton_nivel3.png"), image_hover=pygame.image.load("assets/botones_niveles/boton_nivel3_h.png"), pos=(650, 440), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
-    boton_salir = Button(image=pygame.image.load("assets/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/botones_niveles/boton_back_h.png"), pos=(650, 575), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")    
+    boton_nivel1 = Button(image=pygame.image.load("assets/español/botones_niveles/boton_nivel1.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_nivel1_h.png"), pos=(650, 200), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_nivel2 = Button(image=pygame.image.load("assets/español/botones_niveles/boton_nivel2.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_nivel2_h.png"), pos=(650, 320), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_nivel3 = Button(image=pygame.image.load("assets/español/botones_niveles/boton_nivel3.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_nivel3_h.png"), pos=(650, 440), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
+    boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(650, 575), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")    
 
     while True:
         pantalla.blit(fondo, (0, 0))
