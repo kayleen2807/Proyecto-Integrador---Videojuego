@@ -40,7 +40,7 @@ def jugar_nivel1(pantalla, personaje):
             break
 
     # Botón de pausa:
-    boton_pausa = Button(image = pygame.image.load("assets/ingles/boton_pausa/pausa.png"), image_hover = None, pos=(1220, 50), text_input="", font=get_font(1), base_color="#FFFFFF", hovering_color="Gray")
+    boton_pausa = Button(image = pygame.image.load("assets/pausa.png"), image_hover = None, pos=(1220, 50), text_input="", font=get_font(1), base_color="#FFFFFF", hovering_color="Gray")
     clock = pygame.time.Clock()
 
     while True:

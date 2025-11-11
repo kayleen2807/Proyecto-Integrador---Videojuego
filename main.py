@@ -13,6 +13,7 @@ def main():
     pantalla_actual = "inicio"
     nivel_seleccionado = None
     personaje = None
+
     #Este bucle hace el intercanbio de una pantalla a otra y se activa la funcion de cada una
     while True:
         if pantalla_actual == "inicio":
