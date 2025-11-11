@@ -1,6 +1,10 @@
 import pygame
 pygame.init()
 
+musica_activa = True
+idioma_actual = "es"
+
+
 # Configuración de pantalla
 pantalla = pygame.display.set_mode((1280, 720),) #pygame.FULLSCREEN)
 pygame.display.set_caption("Menu principal")
