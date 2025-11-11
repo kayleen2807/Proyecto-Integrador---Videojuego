@@ -2,9 +2,6 @@ import pygame
 from musica import reproducir_musica, detener_musica
 # Cargar sprites
 sprite_basura = pygame.image.load("assets/basura/basura 2.png").convert_alpha()
-sprite_drone = pygame.image.load("assets/dron.png").convert_alpha()
-sprite_boton = pygame.image.load("assets/boton.png").convert_alpha()
-sprite_nube = pygame.image.load("assets/nube.png").convert_alpha()
 
 def cargar_basura(tmx_data):
     basura = []
@@ -93,25 +90,4 @@ def victoria(pantalla, personaje):
     pygame.display.update()
     pygame.time.wait(3000)  # espera antes de volver al menú
     detener_musica()
-
-def cargar_drones(tmx_data):
-    drones = []
-    for obj in tmx_data.objects:
-        if obj.name == "d":
-            rect = pygame.Rect(obj.x - obj.width // 2, obj.y - obj.height, obj.width, obj.height)
-            drones.append(rect)
-    return drones
-
-def cargar_boton(tmx_data):
-    for obj in tmx_data.objects:
-        if obj.name == "b":
-            return pygame.Rect(obj.x, obj.y, obj.width, obj.height)
-    return None
-
-def cargar_nubes(tmx_data):
-    nubes = []
-    for obj in tmx_data.objects:
-        if obj.name == "n":
-            rect = pygame.Rect(obj.x - obj.width // 2, obj.y - obj.height, obj.width, obj.height)
-            nubes.append(rect)
-    return nubes
+    
