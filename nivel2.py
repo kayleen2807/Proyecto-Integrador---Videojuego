@@ -11,6 +11,7 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 # Pantalla principal del juego:
 def jugar_nivel2(pantalla, personaje):
     from vidas import dibujar_hud_vidas
+    from objetos import dibujar_items, sprite_nube, sprite_humo, cargar_nubes, cargar_humos
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
     zoom = 1.5
@@ -27,6 +28,8 @@ def jugar_nivel2(pantalla, personaje):
 
     tmx_data = pytmx.util_pygame.load_pygame("mapas/Nvl2(c).tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
+    nubes = cargar_nubes(tmx_data)
+    humos = cargar_humos(tmx_data)
 
 
     for obj in tmx_data.objects:
@@ -124,6 +127,8 @@ def jugar_nivel2(pantalla, personaje):
             
             # Dibujar HUD de vidas
             dibujar_hud_vidas(pantalla, vidas)
+            dibujar_items(pantalla, nubes, sprite_nube, camara_x, camara_y, zoom)
+            dibujar_items(pantalla, humos, sprite_humo, camara_x, camara_y, zoom)
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)

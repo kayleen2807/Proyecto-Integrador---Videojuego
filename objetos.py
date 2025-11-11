@@ -2,6 +2,24 @@ import pygame
 from musica import reproducir_musica, detener_musica
 # Cargar sprites
 sprite_basura = pygame.image.load("assets/basura/basura 2.png").convert_alpha()
+sprite_nube = pygame.image.load("mapas/nube.png").convert_alpha()
+sprite_humo = pygame.image.load("mapas/humo.png").convert_alpha()
+
+def cargar_nubes(tmx_data):
+    nubes = []
+    for obj in tmx_data.objects:
+        if obj.name == "n":
+            rect = pygame.Rect(obj.x - obj.width // 2, obj.y - obj.height, obj.width, obj.height)
+            nubes.append(rect)
+    return nubes
+
+def cargar_humos(tmx_data):
+    humos = []
+    for obj in tmx_data.objects:
+        if obj.name == "h":
+            rect = pygame.Rect(obj.x - obj.width // 2, obj.y - obj.height, obj.width, obj.height)
+            humos.append(rect)
+    return humos
 
 def cargar_basura(tmx_data):
     basura = []

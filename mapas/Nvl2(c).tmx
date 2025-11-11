@@ -13,16 +13,16 @@
   <image source="../assets/T_Basura.png" width="64" height="64"/>
  </tileset>
  <tileset firstgid="77" name="tubo" tilewidth="32" tileheight="32" tilecount="4" columns="2">
-  <image source="../../tubo_p.png" width="64" height="64"/>
+  <image source="tubo_p.png" width="64" height="64"/>
  </tileset>
  <tileset firstgid="81" name="tubo2" tilewidth="32" tileheight="32" tilecount="4" columns="2">
-  <image source="../../tubo_g.png" width="64" height="64"/>
+  <image source="tubo_g.png" width="64" height="64"/>
  </tileset>
  <tileset firstgid="85" name="4" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../Sprite 1 nivel 2.png" width="32" height="32"/>
+  <image source="Sprite 1 nivel 2.png" width="32" height="32"/>
  </tileset>
  <tileset firstgid="86" name="5" tilewidth="32" tileheight="32" tilecount="1" columns="1">
-  <image source="../../Sprite 2 nvl 2.png" width="32" height="32"/>
+  <image source="Sprite 2 nvl 2.png" width="32" height="32"/>
  </tileset>
  <layer id="1" name="Nvl2" width="70" height="50">
   <data encoding="csv">
