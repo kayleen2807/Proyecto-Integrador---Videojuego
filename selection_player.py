@@ -1,4 +1,5 @@
 import pygame
+from game_over import pantalla_gameover
 
 def escalar(sprite, factor):
         ancho = int(sprite.get_width() * factor)
@@ -14,6 +15,11 @@ class Personaje:
         self.direccion = "derecha"
         self.frame_actual = 0
         self.contador_animacion = 0
+
+        #Atributos:
+        self.vidas = 3
+        self.invulnerable = False
+        self.invulnerable_tiempo = 0
 
         self.sprites = {
             "base": {
@@ -40,6 +46,24 @@ class Personaje:
             "derecha": self.sprites["base"]["derecha"] + self.sprites["caminar"]["derecha"],
             "izquierda": self.sprites["base"]["izquierda"] + self.sprites["caminar"]["izquierda"]
         }
+
+    def recibir_daño(self):
+        if not self.invulnerable:
+            self.vidas -= 1
+            if self.vidas <= 0:
+                self.estado = "muerto"
+            else:
+                self.invulnerable = True
+                self.invulnerable_tiempo = 60
+
+    def morir(self):
+        self.estado = "muerto"
+
+    def update(self):
+        if self.invulnerable:
+            self.invulnerable_tiempo -= 1
+            if self.invulnerable_tiempo <= 0:
+                self.invulnerable = False
 
     def actualizar_estado(self, keys, en_el_suelo, vel_y):
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
