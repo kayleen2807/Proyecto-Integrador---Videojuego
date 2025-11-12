@@ -43,7 +43,7 @@ def menu_prin(pantalla):
         frame_escalado = pygame.transform.scale(frame, (pantalla_ancho, pantalla_alto))
         fondos_animados.append(frame_escalado)
 
-    reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.6)
+    reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.3)
     title = pygame.image.load("assets/gatods.png")
 
     #botones play, opciones y salir
@@ -137,7 +137,7 @@ def opciones():
                     return "menu"
                 elif icono1.checkForInput(mouse_pos):
                     config.musica_activa = True
-                    reproducir_musica("assets/musica/music_menu.mp3", volumen=0.5)
+                    reproducir_musica("assets/musica/music_menu.mp3", volumen=0.3)
                 elif icono2.checkForInput(mouse_pos):
                     config.musica_activa = False
                     detener_musica()

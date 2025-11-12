@@ -13,10 +13,10 @@ def jugar_nivel2(pantalla, personaje):
     from objetos import dibujar_items, sprite_humo, cargar_humos
     from game_over import pantalla_gameover
     pygame.display.set_caption("Play")
-    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.5)
+    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3)
 
     #funcion para detectar el rango
-    def esta_en_rango(nube_rect, jugador_rect, rango=120):
+    def esta_en_rango(nube_rect, jugador_rect, rango=350):
         distancia = abs(nube_rect.centerx - jugador_rect.centerx)
         return distancia <= rango
     
@@ -38,7 +38,7 @@ def jugar_nivel2(pantalla, personaje):
         nubes = []
         for obj in tmx_data.objects:
             if obj.name == "n":
-                rect = pygame.Rect(obj.x - obj.width // 2, obj.y - obj.height, obj.width, obj.height)
+                rect = pygame.Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height))
                 nubes.append(rect)
         return nubes
     
@@ -161,9 +161,15 @@ def jugar_nivel2(pantalla, personaje):
                 detener_musica()
                 return pantalla_gameover(pantalla, nombre)
             
-            # Dibujar HUD de vidas
-            dibujar_hud_vidas(pantalla, jugador.vidas)
+            #Dibujar humo
             dibujar_items(pantalla, humos, sprite_humo, camara_x, camara_y, zoom)
+
+             #eliminar humos
+            if keys[pygame.K_e]:
+                for humo in humos[:]:  # copia de la lista para evitar errores al eliminar
+                    if jugador.rect.colliderect(humo):
+                        humos.remove(humo)
+                        break  # elimina solo uno por pulsación
 
             # Dibujar nubes y disparar si el jugador está cerca
             for nube_rect in nubes:
@@ -178,7 +184,9 @@ def jugar_nivel2(pantalla, personaje):
                 if esta_en_rango(nube_rect, jugador.rect):
                     if cooldowns[id(nube_rect)] <= 0:
                         direccion = 1
-                        proyectil = Proyectil(nube_rect.centerx, nube_rect.centery, direccion)
+                        spawn_x = nube_rect.centerx
+                        spawn_y = nube_rect.bottom  # justo debajo de la nube
+                        proyectil = Proyectil(spawn_x, spawn_y, direccion)
                         grupo_proyectiles.add(proyectil)
                         cooldowns[id(nube_rect)] = random.randint(120, 240)# espera aleatorio entre disparos
 
@@ -189,12 +197,23 @@ def jugar_nivel2(pantalla, personaje):
 
             # Actualizar y dibujar proyectiles
             grupo_proyectiles.update()
-            grupo_proyectiles.draw(pantalla)
+            for proyectil in grupo_proyectiles:
+                scaled = pygame.transform.scale(proyectil.image, (
+                    int(proyectil.image.get_width() * zoom),
+                    int(proyectil.image.get_height() * zoom)
+                ))
+                pantalla.blit(scaled, (
+                    int((proyectil.rect.x - camara_x) * zoom),
+                    int((proyectil.rect.y - camara_y) * zoom)
+                ))
 
             if pygame.sprite.spritecollide(jugador, grupo_proyectiles, True):
                 jugador.recibir_daño()
 
             jugador.update()
+
+            # Dibujar HUD de vidas
+            dibujar_hud_vidas(pantalla, jugador.vidas)
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
