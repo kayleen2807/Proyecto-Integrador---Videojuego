@@ -10,24 +10,30 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 class Proyectil(pygame.sprite.Sprite):
     def __init__(self, x, y, direccion=1):
         super().__init__()
-        # Carga tu imagen del proyectil
-        self.image = pygame.image.load("robot_lv3/fuego.png").convert_alpha()
+        # Escala la imagen para que se vea bien
+        self.image = pygame.transform.scale(
+            pygame.image.load("robot_lv3/fuego.png").convert_alpha(),
+            (32, 32)  # ajusta el tamaño según lo que quieras
+        )
         self.rect = self.image.get_rect(center=(x, y))
-        self.velocidad = 8 * direccion  # dirección: 1 = derecha, -1 = izquierda
+        self.velocidad = 4 * direccion  
 
     def update(self):
-        # Mover proyectil
+        # Mover proyectil horizontalmente
         self.rect.x += self.velocidad
 
         # Si sale de la pantalla, eliminarlo
-        if self.rect.right < 0 or self.rect.left > 1280:  # ajusta al ancho de tu pantalla
+        if self.rect.right < 0 or self.rect.left > 1280:
             self.kill()
+
 
 class Robot(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.frames = [pygame.image.load("robot_lv3/robot1.png"),
-                       pygame.image.load("robot_lv3/robot2.png")]
+        self.frames = [
+            pygame.image.load("robot_lv3/robot1.png"),
+            pygame.image.load("robot_lv3/robot2.png")
+        ]
         self.frame_index = 0
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect(topleft=(x, y))
@@ -42,11 +48,13 @@ class Robot(pygame.sprite.Sprite):
             self.image = self.frames[self.frame_index]
             self.timer = 0
 
-    def disparar(self, proyectiles_group):
-        direccion = 1  # o -1 según hacia dónde mire el robot
-        proyectil = Proyectil(self.rect.centerx, self.rect.centery, direccion)
+    def disparar(self, proyectiles_group, jugador):
+        direccion = 1 if jugador.rect.centerx > self.rect.centerx else -1
+        # Sale desde el brazo derecho o izquierdo
+        y_salida = self.rect.centery - 10
+        x_salida = self.rect.right if direccion == 1 else self.rect.left
+        proyectil = Proyectil(x_salida, y_salida, direccion)
         proyectiles_group.add(proyectil)
-
 
 # Pantalla principal del juego:
 def jugar_nivel3(pantalla, personaje):
@@ -195,11 +203,18 @@ def jugar_nivel3(pantalla, personaje):
                     return "game_over"
                 
             proyectiles.update()
-            proyectiles.draw(pantalla)
+            for proyectil in proyectiles:
+                pantalla.blit(pygame.transform.smoothscale(proyectil.image, (
+                    int(proyectil.rect.width * zoom),
+                    int(proyectil.rect.height * zoom)
+                )), (
+                    int((proyectil.rect.x - camara_x) * zoom),
+                    int((proyectil.rect.y - camara_y) * zoom)
+                ))
 
             robot.timer_disparo += 1
             if robot.timer_disparo > 120:  # cada 2 segundos
-                robot.disparar(proyectiles)
+                robot.disparar(proyectiles, jugador)
                 robot.timer_disparo = 0
 
             robot.update()
@@ -288,7 +303,7 @@ def instrucciones_nivel3(pantalla):
         pantalla.blit(fondo, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
-        boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(200, 630), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
+        boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(200, 580), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
 
         boton_salir.changeColor(mouse_pos)
         boton_salir.update(pantalla)

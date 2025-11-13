@@ -114,6 +114,6 @@
   <object id="1" name="player_start" x="63.6364" y="1469.21" width="40.3636" height="1.69697"/>
  </objectgroup>
  <objectgroup id="7" name="robot">
-  <object id="54" name="robort_start" x="1733.67" y="793.667" width="124" height="4.66667"/>
+  <object id="54" name="robot_start" x="1729.17" y="794.667" width="124" height="4.66667"/>
  </objectgroup>
 </map>

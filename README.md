@@ -13,7 +13,7 @@
     
   - ![Menu_p](readme/menu_pausa.png)
     
-🌍 Sistema bilingüe dinámico (Español / Inglés)
+🌍 Sistema bilingüe dinámico (Español / Inglés) "En progreso" 
 - ![Bandera1](assets/opciones/bandera_e.png)      ![Bandera2](assets/opciones/bandera_i.png)
   
   🐱 Elección de personaje: gato o gata
@@ -53,7 +53,7 @@
 - ![mouse](readme/click.gif)
 
 **ESC / Cerrar ventana**: Salir del juego
-
+- ![back](readme/back.gif)
 
 Instalación rápida:
 
