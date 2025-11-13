@@ -4,7 +4,7 @@ from button import Button
 from config import pantalla, get_font
 from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
-from game_over import pantalla_gameover
+
 from juego import fade_in_total, nfondo
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
 
@@ -17,18 +17,18 @@ def jugar_nivel3(pantalla, personaje):
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
-    gravedad = 0.6
+    gravedad = 0.4
     vel_y = 0
     en_el_suelo = False
     vidas = 3
     pausado = False
 
     nombre = personaje.lower()
-    fondo_mapa_preview = pygame.image.load("assets/fondos/cuevaa.png").convert()
+    fondo_mapa_preview = pygame.image.load("assets/fondos/cueva.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
 
-    tmx_data = pytmx.util_pygame.load_pygame("mapas/nivel33.tmx")
+    tmx_data = pytmx.util_pygame.load_pygame("mapas/mapa_3.tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
     recogidos = 0
 
@@ -95,10 +95,7 @@ def jugar_nivel3(pantalla, personaje):
                             jugador.rect.y = obj.y
                             vel_y = 0
                             break
-                else:
-                    detener_musica()
-                    from game_over import pantalla_gameover
-                    return pantalla_gameover(pantalla, nombre)
+                
 
             # Cámara
             camara_x = jugador.rect.x - pantalla.get_width() // 2 + jugador.rect.width // 2
