@@ -52,6 +52,7 @@ def jugar_nivel2(pantalla, personaje):
     fondo_mapa_preview = pygame.image.load("assets/fondos/fondo_nvl2.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
+    instrucciones_nivel2(pantalla)
 
     tmx_data = pytmx.util_pygame.load_pygame("mapas/Nvl2(c).tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
@@ -63,7 +64,6 @@ def jugar_nivel2(pantalla, personaje):
 
     #Cooldown para que no dispare muy rápido:
     cooldowns = {id(nube_rect): 0 for nube_rect in nubes}
-
 
     for obj in tmx_data.objects:
         if obj.name == "player_start":
@@ -171,11 +171,10 @@ def jugar_nivel2(pantalla, personaje):
                         humos.remove(humo)
                         break  # elimina solo uno por pulsación
             
-            #pendiente
-            #if len(humos) == 0:
-                #detener_musica()
-                #victoria(pantalla, nombre)
-                #return "victoria"
+            if len(humos) == 0:
+                detener_musica()
+                victoria(pantalla, nombre)
+                return "victoria"
 
             # Dibujar nubes y disparar si el jugador está cerca
             for nube_rect in nubes:
@@ -274,3 +273,25 @@ def jugar_nivel2(pantalla, personaje):
 
         pygame.display.flip()
         clock.tick(60)
+
+def instrucciones_nivel2(pantalla):
+    fondo= pygame.image.load("assets/español/instrucciones/nivel2/instr.png").convert()
+    fondo= pygame.transform.scale(fondo, pantalla.get_size())
+
+    while True:
+        pantalla.blit(fondo, (0, 0))
+        mouse_pos = pygame.mouse.get_pos()
+
+        boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(200, 630), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
+
+        boton_salir.changeColor(mouse_pos)
+        boton_salir.update(pantalla)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if boton_salir.checkForInput(mouse_pos):
+                    return  # ← va al nivel
+
+        pygame.display.update()

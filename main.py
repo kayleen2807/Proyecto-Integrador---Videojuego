@@ -6,6 +6,7 @@ from nivel1 import jugar_nivel1
 from nivel2 import jugar_nivel2
 from nivel3 import jugar_nivel3
 import pygame, sys
+from game_over import pantalla_gameover
 
 # Bucle principal del juego
 def main():
@@ -49,7 +50,7 @@ def main():
             if resultado == "victoria":
                 pantalla_actual = "menu"
             elif resultado == "game_over":
-                pantalla_actual = "menu"
+                pantalla_actual = pantalla_gameover(pantalla, personaje)
             elif resultado == "salir":
                 pantalla_actual = "salir"
             elif resultado == "menu":

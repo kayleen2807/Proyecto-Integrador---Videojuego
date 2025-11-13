@@ -18,7 +18,7 @@ def jugar_nivel1(pantalla, personaje):
     
     animacion_intro(pantalla, personaje)
 
-    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3, loop=-1)
+    reproducir_musica ("assets/musica/music_1.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
     gravedad = 0.4
     vel_y = 0

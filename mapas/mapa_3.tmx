@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="39">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="55">
  <tileset firstgid="1" name="plataformas1" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="60" columns="10">
   <image source="pataformasahorasí.png" width="330" height="199"/>
  </tileset>
@@ -63,6 +63,7 @@
 15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,25,25,25,25,15,15,15,15,15,15,15,15,25,25,25,25,25,25,25,25,25,25,15,15,15,15,15,15,15,15,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25,25
 </data>
  </layer>
+ <objectgroup id="6" name="caida"/>
  <objectgroup id="2" name="Piso">
   <object id="6" x="0" y="1471.75" width="703.333" height="128.25"/>
   <object id="7" x="832.182" y="1471.82" width="255.667" height="127.455"/>
@@ -96,11 +97,23 @@
   <object id="38" x="736.333" y="1409.33" width="63.6667" height="30.3333"/>
  </objectgroup>
  <objectgroup id="3" name="lava">
-  <object id="35" x="704" y="1471.5" width="127.5" height="127.75"/>
-  <object id="36" x="1088.67" y="1472.33" width="318.667" height="127"/>
-  <object id="37" x="1664" y="1472" width="576.083" height="128.667"/>
+  <object id="35" name="lava" x="703.75" y="1462.5" width="127.5" height="127.75"/>
+  <object id="36" name="lava" x="1088.17" y="1458.83" width="318.667" height="127"/>
+  <object id="37" name="lava" x="1664.25" y="1456.75" width="576.083" height="128.667"/>
+ </objectgroup>
+ <objectgroup id="5" name="gases">
+  <object id="39" name="g" x="1361.33" y="1154" width="64" height="92"/>
+  <object id="41" name="g" x="1012" y="1153.33" width="64" height="92"/>
+  <object id="45" name="g" x="684" y="1153.33" width="64" height="92"/>
+  <object id="48" name="g" x="509.333" y="994.667" width="64" height="92"/>
+  <object id="50" name="g" x="856" y="993.333" width="64" height="92"/>
+  <object id="52" name="g" x="1168.67" y="994" width="64" height="92"/>
+  <object id="53" name="g" x="1534.67" y="995.333" width="64" height="92"/>
  </objectgroup>
  <objectgroup id="4" name="player_start">
   <object id="1" name="player_start" x="63.6364" y="1469.21" width="40.3636" height="1.69697"/>
+ </objectgroup>
+ <objectgroup id="7" name="robot">
+  <object id="54" name="robort_start" x="1733.67" y="793.667" width="124" height="4.66667"/>
  </objectgroup>
 </map>

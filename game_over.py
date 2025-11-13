@@ -13,8 +13,8 @@ def game_over(pantalla):
 
         mouse_pos = pygame.mouse.get_pos()
 
-        boton_menu = Button(image=None, image_hover=None, pos=(500, 630), text_input="VOLVER AL MENU", font=get_font(30), base_color="White", hovering_color="Blue")
-        boton_reiniciar = Button(image=None, image_hover=None, pos=(800, 630), text_input="REINTENTAR", font=get_font(30), base_color="White", hovering_color="Blue")
+        boton_menu = Button(image=None, image_hover=None, pos=(450, 630), text_input="VOLVER AL MENU", font=get_font(25), base_color="White", hovering_color="Blue")
+        boton_reiniciar = Button(image=None, image_hover=None, pos=(850, 630), text_input="REINTENTAR", font=get_font(25), base_color="White", hovering_color="Blue")
 
         boton_menu.changeColor(mouse_pos)
         boton_menu.update(pantalla)

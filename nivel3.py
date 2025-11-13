@@ -4,39 +4,90 @@ from button import Button
 from config import pantalla, get_font
 from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
-
-from juego import fade_in_total, nfondo
+from juego import fade_in_total
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
+#robooot
+class Proyectil(pygame.sprite.Sprite):
+    def __init__(self, x, y, direccion=1):
+        super().__init__()
+        # Carga tu imagen del proyectil
+        self.image = pygame.image.load("robot_lv3/fuego.png").convert_alpha()
+        self.rect = self.image.get_rect(center=(x, y))
+        self.velocidad = 8 * direccion  # dirección: 1 = derecha, -1 = izquierda
+
+    def update(self):
+        # Mover proyectil
+        self.rect.x += self.velocidad
+
+        # Si sale de la pantalla, eliminarlo
+        if self.rect.right < 0 or self.rect.left > 1280:  # ajusta al ancho de tu pantalla
+            self.kill()
+
+class Robot(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.frames = [pygame.image.load("robot_lv3/robot1.png"),
+                       pygame.image.load("robot_lv3/robot2.png")]
+        self.frame_index = 0
+        self.image = self.frames[self.frame_index]
+        self.rect = self.image.get_rect(topleft=(x, y))
+        self.timer = 0
+        self.timer_disparo = 0
+
+    def update(self):
+        # Animación de brazos
+        self.timer += 1
+        if self.timer > 20:
+            self.frame_index = (self.frame_index + 1) % len(self.frames)
+            self.image = self.frames[self.frame_index]
+            self.timer = 0
+
+    def disparar(self, proyectiles_group):
+        direccion = 1  # o -1 según hacia dónde mire el robot
+        proyectil = Proyectil(self.rect.centerx, self.rect.centery, direccion)
+        proyectiles_group.add(proyectil)
+
 
 # Pantalla principal del juego:
 def jugar_nivel3(pantalla, personaje):
 
+    def cargar_gases(tmx_data):
+        gases = []
+        for obj in tmx_data.objects:
+                if obj.name == "g":
+                    rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
+                    gases.append({"rect": rect, "visible": True, "timer": 0})
+        return gases
+
     from vidas import dibujar_hud_vidas
-    from objetos import verificar_victoria, victoria
-    from objetos import recolectar_items, dibujar_items, sprite_basura, verificar_victoria, cargar_basura, victoria
+    from objetos import victoria
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_3.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
     gravedad = 0.4
     vel_y = 0
     en_el_suelo = False
-    vidas = 3
     pausado = False
 
     nombre = personaje.lower()
     fondo_mapa_preview = pygame.image.load("assets/fondos/cueva.png").convert()
     fondo_mapa_preview = pygame.transform.scale(fondo_mapa_preview, pantalla.get_size())
     fade_in_total(pantalla, fondo_mapa_preview)
+    instrucciones_nivel3(pantalla)
 
     tmx_data = pytmx.util_pygame.load_pygame("mapas/mapa_3.tmx")
     colisiones = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects]
-    recogidos = 0
+    lava = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) for obj in tmx_data.objects if obj.name == "lava"]
+    gases = cargar_gases(tmx_data)
+    gases_img = pygame.image.load("assets/gas1.png").convert_alpha()
+    proyectiles = pygame.sprite.Group()
 
 
     for obj in tmx_data.objects:
         if obj.name == "player_start":
             jugador = Personaje(nombre, obj.x, obj.y)
-            break
+        elif obj.name == "robot_start":   # pon un objeto en Tiled con este nombre
+            robot = Robot(obj.x, obj.y)
 
     # Botón de pausa:
     boton_pausa = Button(image = pygame.image.load("assets/pausa.png"), image_hover = None, pos=(1220, 50), text_input="", font=get_font(1), base_color="#FFFFFF", hovering_color="Gray")
@@ -87,8 +138,8 @@ def jugar_nivel3(pantalla, personaje):
             # Verificar caída fuera del mapa
             map_height_px = tmx_data.height * tmx_data.tileheight
             if jugador.rect.y > map_height_px:
-                vidas -= 1
-                if vidas > 0:
+                jugador.vidas -= 1
+                if jugador.vidas > 0:
                     for obj in tmx_data.objects:
                         if obj.name == "player_start":
                             jugador.rect.x = obj.x
@@ -121,13 +172,62 @@ def jugar_nivel3(pantalla, personaje):
                                 int((x * tmx_data.tilewidth - camara_x) * zoom),
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
+            #Tiempo de los gases
+            for gas in gases:
+                gas["timer"] += 1
+                if gas["timer"] > 180:  # cada 2 segundos
+                    gas["visible"] = not gas["visible"]
+                    gas["timer"] = 0
+
+            for gas in gases:
+                if gas["visible"]:
+                    pantalla.blit(pygame.transform.smoothscale(gases_img, (
+                        int(gas["rect"].width * zoom),
+                        int(gas["rect"].height * zoom)
+                    )), (
+                        int((gas["rect"].x - camara_x) * zoom),
+                        int((gas["rect"].y - camara_y) * zoom)
+                    ))
+            
+            for gas in gases:
+                if gas["visible"] and jugador.rect.colliderect(gas["rect"]):
+                    detener_musica()
+                    return "game_over"
+                
+            proyectiles.update()
+            proyectiles.draw(pantalla)
+
+            robot.timer_disparo += 1
+            if robot.timer_disparo > 120:  # cada 2 segundos
+                robot.disparar(proyectiles)
+                robot.timer_disparo = 0
+
+            robot.update()
+            pantalla.blit(robot.image, (
+                int((robot.rect.x - camara_x) * zoom),
+                int((robot.rect.y - camara_y) * zoom)
+            ))
+
+
+            if pygame.sprite.spritecollide(jugador, proyectiles, True):
+                jugador.vidas -= 1
+                if jugador.vidas <= 0:
+                    detener_musica()
+                    return "game_over"
 
             #dibujar vidas y basura
-            dibujar_hud_vidas(pantalla, vidas)
+            dibujar_hud_vidas(pantalla, jugador.vidas)
 
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
+
+        #Verificar colisión con lava
+        
+        for zona in lava:
+            if zona.collidepoint(jugador.rect.midbottom):
+                detener_musica()
+                return "game_over"
 
         # Botón de pausa
         boton_pausa.changeColor(mouse_pos)
@@ -179,3 +279,25 @@ def jugar_nivel3(pantalla, personaje):
 
         pygame.display.flip()
         clock.tick(60)
+
+def instrucciones_nivel3(pantalla):
+    fondo= pygame.image.load("assets/español/instrucciones/nivel3/instr.png").convert()
+    fondo= pygame.transform.scale(fondo, pantalla.get_size())
+
+    while True:
+        pantalla.blit(fondo, (0, 0))
+        mouse_pos = pygame.mouse.get_pos()
+
+        boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(200, 630), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
+
+        boton_salir.changeColor(mouse_pos)
+        boton_salir.update(pantalla)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if boton_salir.checkForInput(mouse_pos):
+                    return  # ← va al nivel
+
+        pygame.display.update()

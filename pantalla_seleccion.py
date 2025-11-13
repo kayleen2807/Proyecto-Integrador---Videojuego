@@ -1,6 +1,6 @@
 from config import pantalla, get_font
 from button import Button
-from musica import reproducir_musica, detener_musica
+from musica import reproducir_musica, detener_musica, continuar_musica, pausar_musica
 import pygame
 import config
 # Pantalla de inicio
@@ -147,11 +147,14 @@ def opciones():
                 if boton_back.checkForInput(mouse_pos):
                     return "menu"
                 elif icono1.checkForInput(mouse_pos):
-                    config.musica_activa = True
-                    reproducir_musica("assets/musica/music_menu.mp3", volumen=0.3, loop=-1)
+                    if not config.musica_activa:
+                        reproducir_musica("assets/musica/music_menu.mp3", volumen=0.3, loop=-1)
+                        config.musica_activa = True
+                    else:
+                        continuar_musica()
                 elif icono2.checkForInput(mouse_pos):
                     config.musica_activa = False
-                    detener_musica()
+                    pausar_musica()
                 elif boton_control.checkForInput(mouse_pos):
                     mostrar_pantalla_controles(pantalla)
 
