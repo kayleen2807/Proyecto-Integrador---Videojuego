@@ -10,13 +10,12 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 class Proyectil(pygame.sprite.Sprite):
     def __init__(self, x, y, direccion=1):
         super().__init__()
-        # Escala la imagen para que se vea bien
         self.image = pygame.transform.scale(
             pygame.image.load("robot_lv3/fuego.png").convert_alpha(),
             (32, 32)  # ajusta el tamaño según lo que quieras
         )
         self.rect = self.image.get_rect(center=(x, y))
-        self.velocidad = 4 * direccion  
+        self.velocidad = 2 * direccion  
 
     def update(self):
         # Mover proyectil horizontalmente
@@ -66,9 +65,10 @@ def jugar_nivel3(pantalla, personaje):
                     rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
                     gases.append({"rect": rect, "visible": True, "timer": 0})
         return gases
+    
 
     from vidas import dibujar_hud_vidas
-    from objetos import victoria
+    from objetos import victoria3
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_3.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
@@ -89,6 +89,9 @@ def jugar_nivel3(pantalla, personaje):
     gases = cargar_gases(tmx_data)
     gases_img = pygame.image.load("assets/gas1.png").convert_alpha()
     proyectiles = pygame.sprite.Group()
+
+    victoria_objetos = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) 
+                    for obj in tmx_data.objects if obj.name == "porta"]
 
 
     for obj in tmx_data.objects:
@@ -165,6 +168,21 @@ def jugar_nivel3(pantalla, personaje):
             camara_x = max(0, min(camara_x, map_width_px - visible_width))
             camara_y = max(0, min(camara_y, map_height_px - visible_height))
 
+            # Update robot y proyectiles
+            proyectiles.update()
+            robot.timer_disparo += 1
+            if robot.timer_disparo > 120:
+                robot.disparar(proyectiles, jugador)
+                robot.timer_disparo = 0
+            robot.update()
+
+            #Tiempo de los gases
+            for gas in gases:
+                gas["timer"] += 1
+                if gas["timer"] > 120:  # cada 2 segundos
+                    gas["visible"] = not gas["visible"]
+                    gas["timer"] = 0
+
             # Dibujar mapa
             for layer in tmx_data.visible_layers:
                 if isinstance(layer, pytmx.TiledTileLayer):
@@ -180,29 +198,8 @@ def jugar_nivel3(pantalla, personaje):
                                 int((x * tmx_data.tilewidth - camara_x) * zoom),
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
-            #Tiempo de los gases
-            for gas in gases:
-                gas["timer"] += 1
-                if gas["timer"] > 180:  # cada 2 segundos
-                    gas["visible"] = not gas["visible"]
-                    gas["timer"] = 0
-
-            for gas in gases:
-                if gas["visible"]:
-                    pantalla.blit(pygame.transform.smoothscale(gases_img, (
-                        int(gas["rect"].width * zoom),
-                        int(gas["rect"].height * zoom)
-                    )), (
-                        int((gas["rect"].x - camara_x) * zoom),
-                        int((gas["rect"].y - camara_y) * zoom)
-                    ))
             
-            for gas in gases:
-                if gas["visible"] and jugador.rect.colliderect(gas["rect"]):
-                    detener_musica()
-                    return "game_over"
-                
-            proyectiles.update()
+            # Proyectiles
             for proyectil in proyectiles:
                 pantalla.blit(pygame.transform.smoothscale(proyectil.image, (
                     int(proyectil.rect.width * zoom),
@@ -212,37 +209,56 @@ def jugar_nivel3(pantalla, personaje):
                     int((proyectil.rect.y - camara_y) * zoom)
                 ))
 
-            robot.timer_disparo += 1
-            if robot.timer_disparo > 120:  # cada 2 segundos
-                robot.disparar(proyectiles, jugador)
-                robot.timer_disparo = 0
+            #gases
+            for gas in gases:
+                if gas["visible"]:
+                    pantalla.blit(pygame.transform.smoothscale(gases_img, (
+                        int(gas["rect"].width * zoom),
+                        int(gas["rect"].height * zoom)
+                    )), (
+                        int((gas["rect"].x - camara_x) * zoom),
+                        int((gas["rect"].y - camara_y) * zoom)
+                    ))
 
-            robot.update()
+            #robot
             pantalla.blit(robot.image, (
                 int((robot.rect.x - camara_x) * zoom),
                 int((robot.rect.y - camara_y) * zoom)
             ))
 
+            # Jugador
+            jugador.actualizar_estado(keys, en_el_suelo, vel_y)
+            jugador.dibujar(pantalla, camara_x, camara_y, zoom)
 
+            # HUD
+            dibujar_hud_vidas(pantalla, jugador.vidas)
+
+            # Verificar colisión con gases
+            for gas in gases: 
+                if gas["visible"] and jugador.rect.colliderect(gas["rect"]): 
+                    detener_musica() 
+                    return "game_over"
+
+            # Verificar colisión con proyectiles
             if pygame.sprite.spritecollide(jugador, proyectiles, True):
                 jugador.vidas -= 1
                 if jugador.vidas <= 0:
                     detener_musica()
                     return "game_over"
+                
+            #Verificar colisión con lava
+            for zona in lava:
+                if zona.collidepoint(jugador.rect.midbottom):
+                    detener_musica()
+                    return "game_over"
+                
+            # Verificar colisión con objeto de victoria
+            for zona in victoria_objetos:
+                if jugador.rect.colliderect(zona):
+                    detener_musica()
+                    victoria3(pantalla, personaje)
+                    return "victoria"
 
-            #dibujar vidas y basura
-            dibujar_hud_vidas(pantalla, jugador.vidas)
-
-
-        jugador.actualizar_estado(keys, en_el_suelo, vel_y)
-        jugador.dibujar(pantalla, camara_x, camara_y, zoom)
-
-        #Verificar colisión con lava
-        
-        for zona in lava:
-            if zona.collidepoint(jugador.rect.midbottom):
-                detener_musica()
-                return "game_over"
 
         # Botón de pausa
         boton_pausa.changeColor(mouse_pos)
