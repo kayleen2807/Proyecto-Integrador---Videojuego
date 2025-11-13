@@ -10,10 +10,10 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 # Pantalla principal del juego:
 def jugar_nivel2(pantalla, personaje):
     from vidas import dibujar_hud_vidas
-    from objetos import dibujar_items, sprite_humo, cargar_humos
+    from objetos import dibujar_items, sprite_humo, cargar_humos, victoria
     from game_over import pantalla_gameover
     pygame.display.set_caption("Play")
-    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3, loop=-1)
+    reproducir_musica ("assets/musica/music_2.mp3", volumen=0.3, loop=-1)
 
     #funcion para detectar el rango
     def esta_en_rango(nube_rect, jugador_rect, rango=350):
@@ -170,6 +170,12 @@ def jugar_nivel2(pantalla, personaje):
                     if jugador.rect.colliderect(humo):
                         humos.remove(humo)
                         break  # elimina solo uno por pulsación
+            
+            #pendiente
+            #if len(humos) == 0:
+                #detener_musica()
+                #victoria(pantalla, nombre)
+                #return "victoria"
 
             # Dibujar nubes y disparar si el jugador está cerca
             for nube_rect in nubes:

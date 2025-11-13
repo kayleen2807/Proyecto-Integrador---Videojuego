@@ -82,7 +82,6 @@ def menu_prin(pantalla):
                 return "salir"
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if boton_play.checkForInput(mouse_pos):
-                    detener_musica()
                     for alpha in range(0, 255, 5):
                         overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
                         overlay.set_alpha(alpha)

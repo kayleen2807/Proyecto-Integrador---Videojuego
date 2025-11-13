@@ -4,6 +4,85 @@ from musica import reproducir_musica, detener_musica
 sprite_basura = pygame.image.load("assets/basura/basura 2.png").convert_alpha()
 sprite_humo = pygame.image.load("mapas/humo.png").convert_alpha()
 
+def animacion_intro(pantalla, personaje):
+     # Cargar animación del personaje
+    ruta_frames = f"assets/intro/nivel1/{personaje}/"
+    total_frames = 10
+    frames = []
+
+    for i in range(total_frames):
+        frame = pygame.image.load(f"{ruta_frames}intro_{i}.png").convert_alpha()
+        frame = pygame.transform.scale(frame, pantalla.get_size())
+        frames.append(frame)
+
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    for alpha in range(0, 255, 5):
+                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
+                        overlay.set_alpha(alpha)
+                        overlay.fill((0, 0, 0))
+                        pantalla.blit(overlay, (0, 0))
+                        pygame.display.update()
+                        pygame.time.delay(10)
+
+    # Reproducir animación una sola vez
+    for frame in frames:
+        pantalla.blit(frame, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
+
+def animacion_intro2(pantalla, personaje):
+     # Cargar animación del personaje
+    ruta_frames = f"assets/intro/nivel2/{personaje}/"
+    total_frames = 10
+    frames = []
+
+    for i in range(total_frames):
+        frame = pygame.image.load(f"{ruta_frames}intro_{i}.png").convert_alpha()
+        frame = pygame.transform.scale(frame, pantalla.get_size())
+        frames.append(frame)
+
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    for alpha in range(0, 255, 5):
+                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
+                        overlay.set_alpha(alpha)
+                        overlay.fill((0, 0, 0))
+                        pantalla.blit(overlay, (0, 0))
+                        pygame.display.update()
+                        pygame.time.delay(10)
+
+    # Reproducir animación una sola vez
+    for frame in frames:
+        pantalla.blit(frame, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
+
+def animacion_intro3(pantalla, personaje):
+     # Cargar animación del personaje
+    ruta_frames = f"assets/intro/nivel2/{personaje}/"
+    total_frames = 10
+    frames = []
+
+    for i in range(total_frames):
+        frame = pygame.image.load(f"{ruta_frames}intro_{i}.png").convert_alpha()
+        frame = pygame.transform.scale(frame, pantalla.get_size())
+        frames.append(frame)
+
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    for alpha in range(0, 255, 5):
+                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
+                        overlay.set_alpha(alpha)
+                        overlay.fill((0, 0, 0))
+                        pantalla.blit(overlay, (0, 0))
+                        pygame.display.update()
+                        pygame.time.delay(10)
+
+    # Reproducir animación una sola vez
+    for frame in frames:
+        pantalla.blit(frame, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
+
+
 def cargar_humos(tmx_data):
     humos = []
     for obj in tmx_data.objects:
@@ -78,4 +157,37 @@ def victoria(pantalla, personaje):
     pygame.display.update()
     pygame.time.wait(3000)  # espera antes de volver al menú
     detener_musica()
+
+def victoria2(pantalla, personaje):
+    # Cargar animación del personaje
+    ruta_frames = f"assets/victoria/nivel2/{personaje}/"
+    total_frames = 7  # ajusta según tu animación
+    frames = []
+
+    for i in range(total_frames):
+        frame = pygame.image.load(f"{ruta_frames}lv2_{i}.png").convert_alpha()
+        frame = pygame.transform.scale(frame, pantalla.get_size())
+        frames.append(frame)
+
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    for alpha in range(0, 255, 5):
+                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
+                        overlay.set_alpha(alpha)
+                        overlay.fill((0, 0, 0))
+                        pantalla.blit(overlay, (0, 0))
+                        pygame.display.update()
+                        pygame.time.delay(10)
+
+    # Reproducir animación una sola vez
+    for frame in frames:
+        pantalla.blit(frame, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
+
+    reproducir_musica("assets/musica/victoria.mp3", volumen=0.7, loop=0)
+
+    pygame.display.update()
+    pygame.time.wait(3000)  # espera antes de volver al menú
+    detener_musica()
+
     

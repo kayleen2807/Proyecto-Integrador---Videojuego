@@ -7,14 +7,17 @@ from pause_menu import mostrar_menu_pausa
 from game_over import pantalla_gameover
 from juego import fade_in_total, nfondo
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
+from objetos import animacion_intro
 
 # Pantalla principal del juego:
 def jugar_nivel1(pantalla, personaje):
-
     from vidas import dibujar_hud_vidas
     from basura import dibujar_hud_basura
     from objetos import recolectar_items, dibujar_items, sprite_basura, verificar_victoria, cargar_basura, victoria
     pygame.display.set_caption("Play")
+    
+    animacion_intro(pantalla, personaje)
+
     reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
     gravedad = 0.4
