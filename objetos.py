@@ -73,28 +73,7 @@ def victoria(pantalla, personaje):
         pygame.display.update()
         pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
 
-    
-    reproducir_musica("assets/musica/victoria.mp3", volumen=0.7)
-    # Mostrar fondo final con texto
-    fondo_color = (30, 30, 60)
-    pantalla.fill(fondo_color)
-
-    texto_color = (255, 255, 255)
-    sombra_color = (100, 100, 200)
-    fuente = pygame.font.Font(None, 80)
-    subfuente = pygame.font.Font(None, 40)
-
-    texto = fuente.render("¡Victoria!", True, texto_color)
-    sombra = fuente.render("¡Victoria!", True, sombra_color)
-    texto_rect = texto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 - 50))
-    sombra_rect = sombra.get_rect(center=(texto_rect.centerx + 4, texto_rect.centery + 4))
-
-    subtexto = subfuente.render("Has limpiado el mundo :D ¡Excelente!", True, texto_color)
-    subtexto_rect = subtexto.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2 + 30))
-
-    pantalla.blit(sombra, sombra_rect)
-    pantalla.blit(texto, texto_rect)
-    pantalla.blit(subtexto, subtexto_rect)
+    reproducir_musica("assets/musica/victoria.mp3", volumen=0.7, loop=0)
 
     pygame.display.update()
     pygame.time.wait(3000)  # espera antes de volver al menú

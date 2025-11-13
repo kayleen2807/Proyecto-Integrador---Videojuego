@@ -15,7 +15,7 @@ def jugar_nivel3(pantalla, personaje):
     from objetos import verificar_victoria, victoria
     from objetos import recolectar_items, dibujar_items, sprite_basura, verificar_victoria, cargar_basura, victoria
     pygame.display.set_caption("Play")
-    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3)
+    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
     gravedad = 0.6
     vel_y = 0

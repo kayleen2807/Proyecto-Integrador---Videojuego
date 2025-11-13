@@ -13,7 +13,7 @@ def jugar_nivel2(pantalla, personaje):
     from objetos import dibujar_items, sprite_humo, cargar_humos
     from game_over import pantalla_gameover
     pygame.display.set_caption("Play")
-    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3)
+    reproducir_musica ("assets/musica/music_game.mp3", volumen=0.3, loop=-1)
 
     #funcion para detectar el rango
     def esta_en_rango(nube_rect, jugador_rect, rango=350):

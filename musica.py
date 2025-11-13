@@ -5,7 +5,7 @@ def reproducir_musica(ruta, volumen=0.5, loop=-1):
     if config.musica_activa:
         pygame.mixer.music.load(ruta)
         pygame.mixer.music.set_volume(volumen)
-        pygame.mixer.music.play(-1)
+        pygame.mixer.music.play(loop)
 
 def detener_musica():
     pygame.mixer.music.stop()

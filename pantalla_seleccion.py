@@ -5,19 +5,27 @@ import pygame
 import config
 # Pantalla de inicio
 def inicio():
+    # Cargar frames del fondo animado
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    fondos_animados = []
+    total_frames = 4
+    for i in range(total_frames):
+        frame = pygame.image.load(f"assets/fondos/menu_{i}.png").convert()
+        frame_escalado = pygame.transform.scale(frame, (pantalla_ancho, pantalla_alto))
+        fondos_animados.append(frame_escalado)
+
+    frame_actual = 0
+    reloj = pygame.time.Clock()
+
     pygame.display.set_caption("Inicio")
     while True:
-        #fondo
+        #menu animado
+        pantalla.blit(fondos_animados[frame_actual], (0, 0))
+        frame_actual = (frame_actual + 1) % total_frames
         mouse_pos = pygame.mouse.get_pos()
-        pantalla.fill("black")
-
-        #texto de bienvenida
-        texto = get_font(80).render("Bienvenido", True, "White")
-        texto_rect = texto.get_rect(center=(640, 200))
-        pantalla.blit(texto, texto_rect)
 
         #boton de empezar que lleva al menu principal
-        boton_empezar = Button(image=None, image_hover=None, pos=(640, 400), text_input="EMPEZAR", font=get_font(45), base_color="White", hovering_color="Blue")
+        boton_empezar = Button(image=None, image_hover=None, pos=(650, 400), text_input="EMPEZAR", font=get_font(60), base_color="Black", hovering_color="Grey")
         boton_empezar.changeColor(mouse_pos)
         boton_empezar.update(pantalla)
 
@@ -30,6 +38,7 @@ def inicio():
                     return "menu"
 
         pygame.display.update()
+        reloj.tick(3)  # Controla la velocidad de animación 
 
 # Menú principal
 def menu_prin(pantalla):
@@ -43,7 +52,7 @@ def menu_prin(pantalla):
         frame_escalado = pygame.transform.scale(frame, (pantalla_ancho, pantalla_alto))
         fondos_animados.append(frame_escalado)
 
-    reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.3)
+    reproducir_musica ("assets/musica/music_menu.mp3", volumen=0.3, loop=-1)  
     title = pygame.image.load("assets/gatods.png")
 
     #botones play, opciones y salir
@@ -101,10 +110,12 @@ def opciones():
         pantalla.blit(fondo_mapa_preview, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
-        opc = pygame.image.load("assets/opciones/opts.png")
+        #titulo opciones
+        opc = pygame.image.load("assets/español/pantalla_opc/opts.png")
         pantalla.blit(opc, (440, 100))
 
-        lengua = pygame.image.load("assets/opciones/Lenguage.png")
+        #seleccion de idioma
+        lengua = pygame.image.load("assets/español/pantalla_opc/Lenguage.png")
         pantalla.blit(lengua, (380, 280))
         bandera1 = Button(image=pygame.image.load("assets/opciones/bandera_e.png"), image_hover=pygame.image.load("assets/opciones/bandera_e_h.png"), pos=(700, 300), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
         bandera2 = Button(image=pygame.image.load("assets/opciones/bandera_i.png"), image_hover=pygame.image.load("assets/opciones/bandera_i_h.png"), pos=(840, 300), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
@@ -112,7 +123,8 @@ def opciones():
             bandera.changeColor(mouse_pos)
             bandera.update(pantalla)
 
-        music = pygame.image.load("assets/opciones/Music.png")
+        #seleccion de musica
+        music = pygame.image.load("assets/español/pantalla_opc/Music.png")
         pantalla.blit(music, (380, 380))
         icono1 = Button(image=pygame.image.load("assets/opciones/sonido.png"), image_hover=pygame.image.load("assets/opciones/sonido_h.png"), pos=(700, 400), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
         icono2 = Button(image=pygame.image.load("assets/opciones/mute.png"), image_hover=pygame.image.load("assets/opciones/mute_h.png"), pos=(840, 400), text_input=".", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
@@ -120,12 +132,12 @@ def opciones():
             icono.changeColor(mouse_pos)
             icono.update(pantalla)
 
-
-        boton_back = Button(image=pygame.image.load("assets/ingles/pantalla_opc/quit_opt.png"), image_hover=None, pos=(800, 550), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
+        #botones de los controles y salir al menu
+        boton_back = Button(image=pygame.image.load("assets/español/pantalla_opc/quit_opt.png"), image_hover=pygame.image.load("assets/español/pantalla_opc/quit_opt_h.png"), pos=(800, 550), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
         boton_back.changeColor(mouse_pos)
         boton_back.update(pantalla)
 
-        boton_control = Button(image=pygame.image.load("assets/ingles/pantalla_opc/controles.png"), image_hover=None, pos=(500, 550), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
+        boton_control = Button(image=pygame.image.load("assets/español/pantalla_opc/controles.png"), image_hover=pygame.image.load("assets/español/pantalla_opc/controles_h.png"), pos=(500, 550), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
         boton_control.changeColor(mouse_pos)
         boton_control.update(pantalla)
 
@@ -137,7 +149,7 @@ def opciones():
                     return "menu"
                 elif icono1.checkForInput(mouse_pos):
                     config.musica_activa = True
-                    reproducir_musica("assets/musica/music_menu.mp3", volumen=0.3)
+                    reproducir_musica("assets/musica/music_menu.mp3", volumen=0.3, loop=-1)
                 elif icono2.checkForInput(mouse_pos):
                     config.musica_activa = False
                     detener_musica()
@@ -151,18 +163,33 @@ def mostrar_pantalla_controles(pantalla):
     fondo = pygame.image.load("assets/opciones/fondo_opts.png").convert()
     fondo = pygame.transform.scale(fondo, pantalla.get_size())
 
-    boton_salir = Button(
-        image=None,
-        image_hover=None,
-        pos=(660, 550),
-        text_input="SALIR",
-        font=get_font(100),
-        base_color="Black",
-        hovering_color="Blue"
-    )
+    # Cargar frames del fondo animado
+    pantalla_ancho, pantalla_alto = pantalla.get_size()
+    fondos_animados = []
+    total_frames = 3
+    for i in range(total_frames):
+        frame = pygame.image.load(f"assets/opciones/controles/Imagen{i}.png").convert_alpha()
+        # Escalar la imagen para que este mas grande
+        factor = 1.5
+        nuevo_ancho = int(frame.get_width() * factor)
+        nuevo_alto = int(frame.get_height() * factor)
+        frame_escalado = pygame.transform.scale(frame, (nuevo_ancho, nuevo_alto))
+
+        # Centrar el frame escalado
+        rect_frame = frame_escalado.get_rect(center=(pantalla_ancho // 2, pantalla_alto // 2))
+        fondos_animados.append((frame_escalado, rect_frame))
+
+    frame_actual = 0
+    reloj = pygame.time.Clock()
+
+    boton_salir = Button(image=pygame.image.load("assets/español/pantalla_opc/quit_opt.png"), image_hover=pygame.image.load("assets/español/pantalla_opc/quit_opt_h.png"), pos=(635, 640), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
+
 
     while True:
         pantalla.blit(fondo, (0, 0))
+        frame, rect_frame = fondos_animados[frame_actual]
+        pantalla.blit(frame, rect_frame)
+        frame_actual = (frame_actual + 1) % total_frames
         mouse_pos = pygame.mouse.get_pos()
 
         boton_salir.changeColor(mouse_pos)
@@ -176,3 +203,4 @@ def mostrar_pantalla_controles(pantalla):
                     return  # ← vuelve a la pantalla de opciones
 
         pygame.display.update()
+        reloj.tick(3)  # Controla la velocidad de animación
