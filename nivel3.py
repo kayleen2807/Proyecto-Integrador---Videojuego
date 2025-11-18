@@ -8,65 +8,37 @@ from juego import fade_in_total
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
 #robooot
 class Proyectil(pygame.sprite.Sprite):
-    def __init__(self, x, y, direccion=1):
+    def __init__(self, x, y, direccion=1, limite_x=1600):
         super().__init__()
         self.image = pygame.transform.scale(
             pygame.image.load("robot_lv3/fuego.png").convert_alpha(),
             (32, 32)  # ajusta el tamaño según lo que quieras
         )
         self.rect = self.image.get_rect(center=(x, y))
-        self.velocidad = 2 * direccion  
+        self.velocidad = 12 * direccion
+        self.limite_x = limite_x  
 
     def update(self):
         # Mover proyectil horizontalmente
         self.rect.x += self.velocidad
 
-        # Si sale de la pantalla, eliminarlo
-        if self.rect.right < 0 or self.rect.left > 1280:
+        # Si sale de la pantalla, eliminar el proyectil
+        if self.rect.right < -200 or self.rect.left > self.limite_x + 200:
             self.kill()
 
 
-class Robot(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.frames = [
-            pygame.image.load("robot_lv3/robot1.png"),
-            pygame.image.load("robot_lv3/robot2.png")
-        ]
-        self.frame_index = 0
-        self.image = self.frames[self.frame_index]
-        self.rect = self.image.get_rect(topleft=(x, y))
-        self.timer = 0
-        self.timer_disparo = 0
-
-    def update(self):
-        # Animación de brazos
-        self.timer += 1
-        if self.timer > 20:
-            self.frame_index = (self.frame_index + 1) % len(self.frames)
-            self.image = self.frames[self.frame_index]
-            self.timer = 0
-
-    def disparar(self, proyectiles_group, jugador):
-        direccion = 1 if jugador.rect.centerx > self.rect.centerx else -1
-        # Sale desde el brazo derecho o izquierdo
-        y_salida = self.rect.centery - 10
-        x_salida = self.rect.right if direccion == 1 else self.rect.left
-        proyectil = Proyectil(x_salida, y_salida, direccion)
-        proyectiles_group.add(proyectil)
-
 # Pantalla principal del juego:
 def jugar_nivel3(pantalla, personaje):
+
 
     def cargar_gases(tmx_data):
         gases = []
         for obj in tmx_data.objects:
                 if obj.name == "g":
-                    rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
+                    rect = pygame.Rect(obj.x, obj.y + 20, obj.width, obj.height)
                     gases.append({"rect": rect, "visible": True, "timer": 0})
         return gases
     
-
     from vidas import dibujar_hud_vidas
     from objetos import victoria3
     pygame.display.set_caption("Play")
@@ -91,7 +63,37 @@ def jugar_nivel3(pantalla, personaje):
     proyectiles = pygame.sprite.Group()
 
     victoria_objetos = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) 
-                    for obj in tmx_data.objects if obj.name == "porta"]
+                    for obj in tmx_data.objects if obj.name == "portal"]
+    
+    class Robot(pygame.sprite.Sprite):
+        def __init__(self, x, y):
+            super().__init__()
+            self.frames = [
+                pygame.image.load("robot_lv3/robot1.png"),
+                pygame.image.load("robot_lv3/robot2.png")
+            ]
+            self.frame_index = 0
+            self.image = self.frames[self.frame_index]
+            self.rect = self.image.get_rect(topleft=(x, y))
+            self.timer = 0
+            self.timer_disparo = 0
+
+        def update(self):
+            # Animación de brazos
+            self.timer += 1
+            if self.timer > 20:
+                self.frame_index = (self.frame_index + 1) % len(self.frames)
+                self.image = self.frames[self.frame_index]
+                self.timer = 0
+
+        def disparar(self, proyectiles_group, jugador):
+            direccion = 1 if jugador.rect.centerx > self.rect.centerx else -1
+            # Sale desde el brazo derecho o izquierdo
+            y_salida = self.rect.centery - 10
+            x_salida = self.rect.right if direccion == 1 else self.rect.left
+            map_width_px = tmx_data.width * tmx_data.tilewidth
+            proyectil = Proyectil(x_salida, y_salida, direccion, limite_x=map_width_px)
+            proyectiles_group.add(proyectil)
 
 
     for obj in tmx_data.objects:
@@ -171,7 +173,7 @@ def jugar_nivel3(pantalla, personaje):
             # Update robot y proyectiles
             proyectiles.update()
             robot.timer_disparo += 1
-            if robot.timer_disparo > 120:
+            if robot.timer_disparo > 180:
                 robot.disparar(proyectiles, jugador)
                 robot.timer_disparo = 0
             robot.update()
@@ -179,7 +181,7 @@ def jugar_nivel3(pantalla, personaje):
             #Tiempo de los gases
             for gas in gases:
                 gas["timer"] += 1
-                if gas["timer"] > 120:  # cada 2 segundos
+                if gas["timer"] > 180:  # cada 3 segundos
                     gas["visible"] = not gas["visible"]
                     gas["timer"] = 0
 
@@ -234,8 +236,10 @@ def jugar_nivel3(pantalla, personaje):
             dibujar_hud_vidas(pantalla, jugador.vidas)
 
             # Verificar colisión con gases
-            for gas in gases: 
-                if gas["visible"] and jugador.rect.colliderect(gas["rect"]): 
+            for gas in gases:
+                print("Chequeando gas:", gas["rect"], "visible:", gas["visible"]) 
+                if gas["visible"] and jugador.rect.colliderect(gas["rect"]):
+                    print("¡COLISIÓN CON GAS!")
                     detener_musica() 
                     return "game_over"
 
@@ -319,16 +323,16 @@ def instrucciones_nivel3(pantalla):
         pantalla.blit(fondo, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
-        boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(200, 580), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
+        boton_jugar = Button(image=pygame.image.load("assets/jugar.png"), image_hover=pygame.image.load("assets/jugar_h.png"), pos=(200, 600), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
 
-        boton_salir.changeColor(mouse_pos)
-        boton_salir.update(pantalla)
+        boton_jugar.changeColor(mouse_pos)
+        boton_jugar.update(pantalla)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if boton_salir.checkForInput(mouse_pos):
+                if boton_jugar.checkForInput(mouse_pos):
                     return  # ← va al nivel
 
         pygame.display.update()

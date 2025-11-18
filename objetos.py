@@ -30,58 +30,6 @@ def animacion_intro(pantalla, personaje):
         pygame.display.update()
         pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
 
-def animacion_intro2(pantalla, personaje):
-     # Cargar animación del personaje
-    ruta_frames = f"assets/intro/nivel2/{personaje}/"
-    total_frames = 10
-    frames = []
-
-    for i in range(total_frames):
-        frame = pygame.image.load(f"{ruta_frames}intro_{i}.png").convert_alpha()
-        frame = pygame.transform.scale(frame, pantalla.get_size())
-        frames.append(frame)
-
-    pantalla_ancho, pantalla_alto = pantalla.get_size()
-    for alpha in range(0, 255, 5):
-                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
-                        overlay.set_alpha(alpha)
-                        overlay.fill((0, 0, 0))
-                        pantalla.blit(overlay, (0, 0))
-                        pygame.display.update()
-                        pygame.time.delay(10)
-
-    # Reproducir animación una sola vez
-    for frame in frames:
-        pantalla.blit(frame, (0, 0))
-        pygame.display.update()
-        pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
-
-def animacion_intro3(pantalla, personaje):
-     # Cargar animación del personaje
-    ruta_frames = f"assets/intro/nivel2/{personaje}/"
-    total_frames = 10
-    frames = []
-
-    for i in range(total_frames):
-        frame = pygame.image.load(f"{ruta_frames}intro_{i}.png").convert_alpha()
-        frame = pygame.transform.scale(frame, pantalla.get_size())
-        frames.append(frame)
-
-    pantalla_ancho, pantalla_alto = pantalla.get_size()
-    for alpha in range(0, 255, 5):
-                        overlay = pygame.Surface((pantalla_ancho, pantalla_alto))
-                        overlay.set_alpha(alpha)
-                        overlay.fill((0, 0, 0))
-                        pantalla.blit(overlay, (0, 0))
-                        pygame.display.update()
-                        pygame.time.delay(10)
-
-    # Reproducir animación una sola vez
-    for frame in frames:
-        pantalla.blit(frame, (0, 0))
-        pygame.display.update()
-        pygame.time.delay(1200)  # ajusta velocidad (100 ms = 10 fps)
-
 
 def cargar_humos(tmx_data):
     humos = []
@@ -192,7 +140,7 @@ def victoria2(pantalla, personaje):
 def victoria3(pantalla, personaje):
     # Cargar animación del personaje
     ruta_frames = f"assets/victoria/nivel3/{personaje}/"
-    total_frames = 4  # ajusta según tu animación
+    total_frames = 8  # ajusta según tu animación
     frames = []
 
     for i in range(total_frames):

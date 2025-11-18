@@ -10,7 +10,7 @@ from musica import reproducir_musica, detener_musica, pausar_musica, continuar_m
 # Pantalla principal del juego:
 def jugar_nivel2(pantalla, personaje):
     from vidas import dibujar_hud_vidas
-    from objetos import dibujar_items, sprite_humo, cargar_humos, victoria
+    from objetos import dibujar_items, sprite_humo, cargar_humos, victoria2
     from game_over import pantalla_gameover
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_2.mp3", volumen=0.3, loop=-1)
@@ -173,7 +173,7 @@ def jugar_nivel2(pantalla, personaje):
             
             if len(humos) == 0:
                 detener_musica()
-                victoria(pantalla, nombre)
+                victoria2(pantalla, nombre)
                 return "victoria"
 
             # Dibujar nubes y disparar si el jugador está cerca
@@ -282,16 +282,16 @@ def instrucciones_nivel2(pantalla):
         pantalla.blit(fondo, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
-        boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(200, 630), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
+        boton_jugar = Button(image=pygame.image.load("assets/jugar.png"), image_hover=pygame.image.load("assets/jugar_h.png"), pos=(200, 600), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
 
-        boton_salir.changeColor(mouse_pos)
-        boton_salir.update(pantalla)
+        boton_jugar.changeColor(mouse_pos)
+        boton_jugar.update(pantalla)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if boton_salir.checkForInput(mouse_pos):
+                if boton_jugar.checkForInput(mouse_pos):
                     return  # ← va al nivel
 
         pygame.display.update()

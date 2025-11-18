@@ -1,13 +1,16 @@
-import pygame, pytmx, sys
+import pygame, pytmx, sys, config
 from selection_screen import selection
 from button import Button
 from config import pantalla, get_font
 from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
-from game_over import pantalla_gameover
 from juego import fade_in_total, nfondo
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
 from objetos import animacion_intro
+
+def cargar_img(ruta_relativa):
+    ruta = f"assets/{config.idioma}/{ruta_relativa}"
+    return pygame.image.load(ruta).convert_alpha()
 
 # Pantalla principal del juego:
 def jugar_nivel1(pantalla, personaje):
@@ -133,7 +136,7 @@ def jugar_nivel1(pantalla, personaje):
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
 
-            # Dibujar basura y portal
+            # Dibujar basura
             dibujar_items(pantalla, basura, sprite_basura, camara_x, camara_y, zoom)
             #dibujar vidas y basura
             dibujar_hud_vidas(pantalla, vidas)
@@ -201,23 +204,23 @@ def jugar_nivel1(pantalla, personaje):
         clock.tick(60)
 
 def instrucciones_nivel1(pantalla):
-    fondo= pygame.image.load("assets/español/instrucciones/nivel1/instr.png").convert()
+    fondo= cargar_img("instrucciones/nivel1/instr.png").convert()
     fondo= pygame.transform.scale(fondo, pantalla.get_size())
 
     while True:
         pantalla.blit(fondo, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
-        boton_salir = Button(image=pygame.image.load("assets/español/botones_niveles/boton_back.png"), image_hover=pygame.image.load("assets/español/botones_niveles/boton_back_h.png"), pos=(200, 630), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
+        boton_jugar = Button(image=pygame.image.load("assets/jugar.png"), image_hover=pygame.image.load("assets/jugar_h.png"), pos=(200, 600), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White") 
 
-        boton_salir.changeColor(mouse_pos)
-        boton_salir.update(pantalla)
+        boton_jugar.changeColor(mouse_pos)
+        boton_jugar.update(pantalla)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                if boton_salir.checkForInput(mouse_pos):
+                if boton_jugar.checkForInput(mouse_pos):
                     return  # ← va al nivel
 
         pygame.display.update()
