@@ -8,6 +8,7 @@ from nivel3 import jugar_nivel3
 import pygame, sys
 from game_over import pantalla_gameover
 
+
 # Bucle principal del juego
 def main():
     #Se incia el programa con la pantalla de inicio (bienvevida)

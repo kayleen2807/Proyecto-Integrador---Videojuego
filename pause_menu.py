@@ -17,8 +17,8 @@ def mostrar_menu_pausa(pantalla):
     pantalla.blit(overlay, (0, 0))
     
     #texto pausa
-    texto_pausa = get_font(50).render("PAUSA", True, "White")
-    pantalla.blit(texto_pausa, texto_pausa.get_rect(center=(650, 100)))
+    pausa = cargar_img("texto/pausa.png").convert_alpha()
+    pantalla.blit(pausa, (440, 100))
 
     #botones para elmenu de pausa
     boton_continuar = Button(image=cargar_img("boton_pausa/Resume_icono.png"), image_hover=cargar_img("boton_pausa/Resume_hover.png"), pos=(645, 250), text_input=".", font=get_font(1), base_color="White", hovering_color="Green")
