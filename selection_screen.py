@@ -108,7 +108,7 @@ def selection(pantalla):
             pygame.draw.rect(pantalla, (255, 255, 0), (650, 300, 256, 256), 4)
 
         select_p = cargar_img("texto/eleccion.png").convert_alpha()
-        pantalla.blit(select_p, (440, 100))
+        pantalla.blit(select_p, (250, 100))
 
         pygame.display.flip()
         clock.tick(60)

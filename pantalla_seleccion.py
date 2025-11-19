@@ -30,7 +30,7 @@ def inicio():
         mouse_pos = pygame.mouse.get_pos()
 
         #boton de empezar que lleva al menu principal
-        boton_empezar = Button(image = pygame.image.load("assets/empezar_b2.png"), image_hover=None, pos=(650, 400), text_input="", font=get_font(60), base_color="Black", hovering_color="Grey")
+        boton_empezar = Button(image = pygame.image.load("assets/empezar_b2.png"), image_hover= pygame.image.load("assets/empezar_b2_h.png"), pos=(650, 400), text_input="", font=get_font(60), base_color="Black", hovering_color="Grey")
         boton_empezar.changeColor(mouse_pos)
         boton_empezar.update(pantalla)
 

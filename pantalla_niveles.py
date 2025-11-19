@@ -15,7 +15,7 @@ def pantalla_seleccion_nivel(pantalla):
     fade_in_total(pantalla, fondo)
 
     select = cargar_img("texto/nivel.png").convert_alpha()
-    pantalla.blit(select, (440, 100))
+    pantalla.blit(select, (330, 50))
 
     boton_nivel1 = Button(image=cargar_img("botones_niveles/boton_nivel1.png"), image_hover=cargar_img("botones_niveles/boton_nivel1_h.png"), pos=(650, 200), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
     boton_nivel2 = Button(image=cargar_img("botones_niveles/boton_nivel2.png"), image_hover=cargar_img("botones_niveles/boton_nivel2_h.png"), pos=(650, 320), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
