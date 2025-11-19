@@ -166,10 +166,10 @@ def jugar_nivel2(pantalla, personaje):
 
              #eliminar humos
             if keys[pygame.K_e]:
-                for humo in humos[:]:  # copia de la lista para evitar errores al eliminar
+                for humo in humos[:]:  
                     if jugador.rect.colliderect(humo):
                         humos.remove(humo)
-                        break  # elimina solo uno por pulsación
+                        break  
             
             if len(humos) == 0:
                 detener_musica()
@@ -190,7 +190,7 @@ def jugar_nivel2(pantalla, personaje):
                     if cooldowns[id(nube_rect)] <= 0:
                         direccion = 1
                         spawn_x = nube_rect.centerx
-                        spawn_y = nube_rect.bottom  # justo debajo de la nube
+                        spawn_y = nube_rect.bottom  
                         proyectil = Proyectil(spawn_x, spawn_y, direccion)
                         grupo_proyectiles.add(proyectil)
                         cooldowns[id(nube_rect)] = random.randint(120, 240)# espera aleatorio entre disparos

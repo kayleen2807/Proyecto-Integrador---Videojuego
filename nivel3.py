@@ -1,5 +1,5 @@
 import pygame, pytmx, sys
-from selection_screen import selection
+from game_over import pantalla_gameover
 from button import Button
 from config import pantalla, get_font
 from selection_player import Personaje
@@ -15,7 +15,7 @@ class Proyectil(pygame.sprite.Sprite):
             (32, 32)  # ajusta el tamaño según lo que quieras
         )
         self.rect = self.image.get_rect(center=(x, y))
-        self.velocidad = 12 * direccion
+        self.velocidad = 6 * direccion
         self.limite_x = limite_x  
 
     def update(self):
@@ -29,18 +29,17 @@ class Proyectil(pygame.sprite.Sprite):
 
 # Pantalla principal del juego:
 def jugar_nivel3(pantalla, personaje):
-
+    from vidas import dibujar_hud_vidas
+    from objetos import victoria3
 
     def cargar_gases(tmx_data):
         gases = []
         for obj in tmx_data.objects:
                 if obj.name == "g":
                     rect = pygame.Rect(obj.x, obj.y + 20, obj.width, obj.height)
-                    gases.append({"rect": rect, "visible": True, "timer": 0})
+                    gases.append({"rect": rect, "visible": True, "timer": 0, "time_daño": 0})
         return gases
-    
-    from vidas import dibujar_hud_vidas
-    from objetos import victoria3
+
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_3.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
@@ -61,9 +60,14 @@ def jugar_nivel3(pantalla, personaje):
     gases = cargar_gases(tmx_data)
     gases_img = pygame.image.load("assets/gas1.png").convert_alpha()
     proyectiles = pygame.sprite.Group()
+    imagen_boton = pygame.image.load("assets/boton.png").convert_alpha()
 
-    victoria_objetos = [pygame.Rect(obj.x, obj.y, obj.width, obj.height) 
-                    for obj in tmx_data.objects if obj.name == "portal"]
+    victoria_objetos = []
+    for obj in tmx_data.objects:
+        if obj.name == "boton":
+            rect = pygame.Rect(obj.x, obj.y, obj.width, obj.height)
+            imagen = pygame.image.load("assets/boton.png").convert_alpha()
+            victoria_objetos.append({"rect": rect, "image": imagen})
     
     class Robot(pygame.sprite.Sprite):
         def __init__(self, x, y):
@@ -107,6 +111,9 @@ def jugar_nivel3(pantalla, personaje):
     clock = pygame.time.Clock()
 
     while True:
+        if jugador.timer_dano > 0:
+            jugador.timer_dano -= 1
+
         pantalla.blit(fondo_mapa_preview, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
         keys = pygame.key.get_pressed()
@@ -159,7 +166,6 @@ def jugar_nivel3(pantalla, personaje):
                             jugador.rect.y = obj.y
                             vel_y = 0
                             break
-                
 
             # Cámara
             camara_x = jugador.rect.x - pantalla.get_width() // 2 + jugador.rect.width // 2
@@ -182,8 +188,11 @@ def jugar_nivel3(pantalla, personaje):
             for gas in gases:
                 gas["timer"] += 1
                 if gas["timer"] > 180:  # cada 3 segundos
-                    gas["visible"] = not gas["visible"]
-                    gas["timer"] = 0
+                        gas["visible"] = not gas["visible"]
+                        gas["timer"] = 0
+
+                if gas["time_daño"] > 0:
+                    gas["time_daño"] -= 1
 
             # Dibujar mapa
             for layer in tmx_data.visible_layers:
@@ -201,7 +210,7 @@ def jugar_nivel3(pantalla, personaje):
                                 int((y * tmx_data.tileheight - camara_y) * zoom)
                             ))
             
-            # Proyectiles
+            #Mostrar Proyectiles
             for proyectil in proyectiles:
                 pantalla.blit(pygame.transform.smoothscale(proyectil.image, (
                     int(proyectil.rect.width * zoom),
@@ -211,7 +220,7 @@ def jugar_nivel3(pantalla, personaje):
                     int((proyectil.rect.y - camara_y) * zoom)
                 ))
 
-            #gases
+            #Mostrar gases
             for gas in gases:
                 if gas["visible"]:
                     pantalla.blit(pygame.transform.smoothscale(gases_img, (
@@ -222,7 +231,17 @@ def jugar_nivel3(pantalla, personaje):
                         int((gas["rect"].y - camara_y) * zoom)
                     ))
 
-            #robot
+            #Mostrar boton de victoria
+            for boton in victoria_objetos:
+                pantalla.blit(pygame.transform.scale(boton["image"], (
+                    int(boton["rect"].width * zoom),
+                    int(boton["rect"].height * zoom)
+                )), (
+                    int((boton["rect"].x - camara_x) * zoom),
+                    int((boton["rect"].y - camara_y) * zoom)
+                ))
+
+            #robot en el mapa
             pantalla.blit(robot.image, (
                 int((robot.rect.x - camara_x) * zoom),
                 int((robot.rect.y - camara_y) * zoom)
@@ -232,37 +251,39 @@ def jugar_nivel3(pantalla, personaje):
             jugador.actualizar_estado(keys, en_el_suelo, vel_y)
             jugador.dibujar(pantalla, camara_x, camara_y, zoom)
 
-            # HUD
+            # HUD de vidas
             dibujar_hud_vidas(pantalla, jugador.vidas)
 
             # Verificar colisión con gases
             for gas in gases:
-                print("Chequeando gas:", gas["rect"], "visible:", gas["visible"]) 
                 if gas["visible"] and jugador.rect.colliderect(gas["rect"]):
-                    print("¡COLISIÓN CON GAS!")
-                    detener_musica() 
-                    return "game_over"
+                    if gas["time_daño"] == 0:  # solo daña si el cooldown terminó
+                        jugador.vidas -= 1
+                        gas["time_daño"] = 60  # este gas espera 1 segundo antes de volver a dañar
+                        if jugador.vidas <= 0:
+                            detener_musica()
+                            return pantalla_gameover(pantalla, nombre)
 
             # Verificar colisión con proyectiles
             if pygame.sprite.spritecollide(jugador, proyectiles, True):
-                jugador.vidas -= 1
-                if jugador.vidas <= 0:
-                    detener_musica()
-                    return "game_over"
+                if jugador.timer_dano == 0:
+                    jugador.vidas -= 1
+                    jugador.timer_dano = 60  # 1 segundo de invulnerabilidad
+                    if jugador.vidas <= 0:
+                        return pantalla_gameover(pantalla, nombre)
                 
             #Verificar colisión con lava
             for zona in lava:
                 if zona.collidepoint(jugador.rect.midbottom):
                     detener_musica()
-                    return "game_over"
+                    return pantalla_gameover(pantalla, nombre)
                 
             # Verificar colisión con objeto de victoria
-            for zona in victoria_objetos:
-                if jugador.rect.colliderect(zona):
+            for boton in victoria_objetos:
+                if jugador.rect.colliderect(boton["rect"]):
                     detener_musica()
                     victoria3(pantalla, personaje)
                     return "victoria"
-
 
         # Botón de pausa
         boton_pausa.changeColor(mouse_pos)
