@@ -1,5 +1,9 @@
-import pygame
+import pygame, config
 from config import get_font
+
+def cargar_img(ruta_relativa):
+    ruta = f"assets/{config.idioma}/{ruta_relativa}"
+    return pygame.image.load(ruta).convert_alpha()
 
 def fade_in(pantalla, fondo, duracion=1000):
     clock = pygame.time.Clock()
@@ -103,10 +107,8 @@ def selection(pantalla):
         else:
             pygame.draw.rect(pantalla, (255, 255, 0), (650, 300, 256, 256), 4)
 
-        texto = get_font(20).render("Usa ← → o A/D para elegir. ENTER para confirmar", True, "#000000")
-        texto.set_alpha(texto_alpha)
-        texto_rect = texto.get_rect(center=(640, 200))
-        pantalla.blit(texto, texto_rect)
+        select_p = cargar_img("texto/eleccion.png").convert_alpha()
+        pantalla.blit(select_p, (250, 100))
 
         pygame.display.flip()
         clock.tick(60)

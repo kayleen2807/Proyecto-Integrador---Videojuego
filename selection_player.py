@@ -20,6 +20,7 @@ class Personaje:
         self.vidas = 3
         self.invulnerable = False
         self.invulnerable_tiempo = 0
+        self.timer_dano = 0
 
         self.sprites = {
             "base": {
@@ -64,6 +65,9 @@ class Personaje:
             self.invulnerable_tiempo -= 1
             if self.invulnerable_tiempo <= 0:
                 self.invulnerable = False
+        
+        if self.timer_dano > 0:
+            self.timer_dano -= 1
 
     def actualizar_estado(self, keys, en_el_suelo, vel_y):
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:

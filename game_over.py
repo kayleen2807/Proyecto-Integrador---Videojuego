@@ -1,10 +1,15 @@
-import pygame
+import pygame, config
 from juego import get_font
 from button import Button
 from animacion_gameover import reproducir_animacion
 from musica import reproducir_musica, detener_musica
+
+def cargar_img(ruta_relativa):
+    ruta = f"assets/{config.idioma}/{ruta_relativa}"
+    return pygame.image.load(ruta).convert_alpha()
+
 def game_over(pantalla):
-    fondo_game_over = pygame.image.load("assets/español/pantalla_es.png").convert_alpha()
+    fondo_game_over = cargar_img("game_over/pantalla.png").convert_alpha()
     # Obtener el rect centrado en la pantalla
     rect_fondo = fondo_game_over.get_rect(center=(pantalla.get_width() // 2, pantalla.get_height() // 2))
     while True:
@@ -13,8 +18,8 @@ def game_over(pantalla):
 
         mouse_pos = pygame.mouse.get_pos()
 
-        boton_menu = Button(image=None, image_hover=None, pos=(450, 630), text_input="VOLVER AL MENU", font=get_font(25), base_color="White", hovering_color="Blue")
-        boton_reiniciar = Button(image=None, image_hover=None, pos=(850, 630), text_input="REINTENTAR", font=get_font(25), base_color="White", hovering_color="Blue")
+        boton_menu = Button(image=cargar_img("game_over/volver.png"), image_hover=None, pos=(450, 630), text_input=".", font=get_font(1), base_color="White", hovering_color="Blue")
+        boton_reiniciar = Button(image=cargar_img("game_over/retry.png"), image_hover=None, pos=(850, 630), text_input=".", font=get_font(1), base_color="White", hovering_color="Blue")
 
         boton_menu.changeColor(mouse_pos)
         boton_menu.update(pantalla)

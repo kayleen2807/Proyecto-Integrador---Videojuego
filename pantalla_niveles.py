@@ -14,9 +14,8 @@ def pantalla_seleccion_nivel(pantalla):
     fondo = pygame.transform.scale(fondo, pantalla.get_size())
     fade_in_total(pantalla, fondo)
 
-    fuente = pygame.font.Font(None, 80)
-    texto = fuente.render("Selecciona un nivel", True, (0, 0, 0))
-    texto_rect = texto.get_rect(center=(pantalla.get_width() // 2, 110))
+    select = cargar_img("texto/nivel.png").convert_alpha()
+    pantalla.blit(select, (330, 50))
 
     boton_nivel1 = Button(image=cargar_img("botones_niveles/boton_nivel1.png"), image_hover=cargar_img("botones_niveles/boton_nivel1_h.png"), pos=(650, 200), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
     boton_nivel2 = Button(image=cargar_img("botones_niveles/boton_nivel2.png"), image_hover=cargar_img("botones_niveles/boton_nivel2_h.png"), pos=(650, 320), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")
@@ -24,9 +23,6 @@ def pantalla_seleccion_nivel(pantalla):
     boton_salir = Button(image=cargar_img("botones_niveles/boton_back.png"), image_hover=cargar_img("botones_niveles/boton_back_h.png"), pos=(650, 575), text_input="", font=get_font(1), base_color="#d7fcd4", hovering_color="White")    
 
     while True:
-        pantalla.blit(fondo, (0, 0))
-        pantalla.blit(texto, texto_rect)
-
         mouse_pos = pygame.mouse.get_pos()
         for boton in [boton_nivel1, boton_nivel2, boton_nivel3, boton_salir]:
             boton.changeColor(mouse_pos)
