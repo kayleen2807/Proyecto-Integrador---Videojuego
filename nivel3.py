@@ -187,7 +187,7 @@ def jugar_nivel3(pantalla, personaje):
             #Tiempo de los gases
             for gas in gases:
                 gas["timer"] += 1
-                if gas["timer"] > 180:  # cada 3 segundos
+                if gas["timer"] > 120:  # cada 3 segundos
                         gas["visible"] = not gas["visible"]
                         gas["timer"] = 0
 
