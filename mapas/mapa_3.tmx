@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="175">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="70" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="177">
  <tileset firstgid="1" name="plataformas1" tilewidth="32" tileheight="32" spacing="1" margin="1" tilecount="60" columns="10">
   <image source="pataformasahorasí.png" width="330" height="199"/>
  </tileset>
@@ -221,6 +221,7 @@
   <object id="171" x="1343" y="320.5" width="33" height="30"/>
   <object id="172" x="1120" y="322" width="31" height="27"/>
   <object id="174" x="1279.82" y="513.455" width="31.8182" height="28.3636"/>
+  <object id="175" name="boton" x="2170" y="125" width="64" height="64"/>
  </objectgroup>
  <objectgroup id="3" name="lava">
   <object id="35" name="lava" x="703.583" y="1484" width="127.5" height="127.75"/>
@@ -262,6 +263,6 @@
   <object id="1" name="player_start" x="63.6364" y="1469.21" width="40.3636" height="1.69697"/>
  </objectgroup>
  <objectgroup id="7" name="robot">
-  <object id="54" name="robot_start" x="2064.67" y="32.667" width="124" height="4.66667"/>
+  <object id="54" name="robot_start" x="2018.67" y="40.667" width="124" height="4.66667"/>
  </objectgroup>
 </map>

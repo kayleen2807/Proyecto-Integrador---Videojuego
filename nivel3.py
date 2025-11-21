@@ -60,7 +60,6 @@ def jugar_nivel3(pantalla, personaje):
     gases = cargar_gases(tmx_data)
     gases_img = pygame.image.load("assets/gas1.png").convert_alpha()
     proyectiles = pygame.sprite.Group()
-    imagen_boton = pygame.image.load("assets/boton.png").convert_alpha()
 
     victoria_objetos = []
     for obj in tmx_data.objects:
@@ -254,6 +253,13 @@ def jugar_nivel3(pantalla, personaje):
             # HUD de vidas
             dibujar_hud_vidas(pantalla, jugador.vidas)
 
+            # Verificar colisión con objeto de victoria
+            for boton in victoria_objetos:
+                if jugador.rect.colliderect(boton["rect"].inflate(2, 2)):
+                    detener_musica()
+                    victoria3(pantalla, personaje)
+                    return "victoria"
+
             # Verificar colisión con gases
             for gas in gases:
                 if gas["visible"] and jugador.rect.colliderect(gas["rect"]):
@@ -278,13 +284,6 @@ def jugar_nivel3(pantalla, personaje):
                     detener_musica()
                     return pantalla_gameover(pantalla, nombre)
                 
-            # Verificar colisión con objeto de victoria
-            for boton in victoria_objetos:
-                if jugador.rect.colliderect(boton["rect"]):
-                    detener_musica()
-                    victoria3(pantalla, personaje)
-                    return "victoria"
-
         # Botón de pausa
         boton_pausa.changeColor(mouse_pos)
         boton_pausa.update(pantalla)
