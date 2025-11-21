@@ -1,4 +1,4 @@
-import pygame, pytmx, sys, random
+import pygame, pytmx, sys, random, config
 from selection_screen import selection
 from button import Button
 from config import pantalla, get_font
@@ -6,6 +6,10 @@ from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
 from juego import fade_in_total, nfondo
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
+
+def cargar_img(ruta_relativa):
+    ruta = f"assets/{config.idioma}/{ruta_relativa}"
+    return pygame.image.load(ruta).convert_alpha()
 
 # Pantalla principal del juego:
 def jugar_nivel2(pantalla, personaje):
@@ -275,7 +279,7 @@ def jugar_nivel2(pantalla, personaje):
         clock.tick(60)
 
 def instrucciones_nivel2(pantalla):
-    fondo= pygame.image.load("assets/español/instrucciones/nivel2/instr.png").convert()
+    fondo= cargar_img("instrucciones/nivel2/instr.png").convert()
     fondo= pygame.transform.scale(fondo, pantalla.get_size())
 
     while True:

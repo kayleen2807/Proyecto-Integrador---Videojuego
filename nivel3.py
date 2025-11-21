@@ -1,4 +1,4 @@
-import pygame, pytmx, sys
+import pygame, pytmx, sys, config
 from game_over import pantalla_gameover
 from button import Button
 from config import pantalla, get_font
@@ -6,6 +6,11 @@ from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
 from juego import fade_in_total
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
+
+def cargar_img(ruta_relativa):
+    ruta = f"assets/{config.idioma}/{ruta_relativa}"
+    return pygame.image.load(ruta).convert_alpha()
+
 #robooot
 class Proyectil(pygame.sprite.Sprite):
     def __init__(self, x, y, direccion=1, limite_x=1600):
@@ -336,7 +341,7 @@ def jugar_nivel3(pantalla, personaje):
         clock.tick(60)
 
 def instrucciones_nivel3(pantalla):
-    fondo= pygame.image.load("assets/español/instrucciones/nivel3/instr.png").convert()
+    fondo= cargar_img("instrucciones/nivel3/instr.png").convert()
     fondo= pygame.transform.scale(fondo, pantalla.get_size())
 
     while True:
