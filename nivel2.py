@@ -174,7 +174,7 @@ def jugar_nivel2(pantalla, personaje):
             if len(humos) == 0:
                 detener_musica()
                 victoria2(pantalla, nombre)
-                return "victoria"
+                return "nivel3"
 
             # Dibujar nubes y disparar si el jugador está cerca
             for nube_rect in nubes:

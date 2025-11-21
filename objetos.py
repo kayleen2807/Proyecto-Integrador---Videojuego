@@ -140,7 +140,7 @@ def victoria2(pantalla, personaje):
 def victoria3(pantalla, personaje):
     # Cargar animación del personaje
     ruta_frames = f"assets/victoria/nivel3/{personaje}/"
-    total_frames = 8  # ajusta según tu animación
+    total_frames = 7  # ajusta según tu animación
     frames = []
 
     for i in range(total_frames):

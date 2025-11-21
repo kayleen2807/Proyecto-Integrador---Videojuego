@@ -48,7 +48,14 @@ def main():
                 resultado = jugar_nivel2(pantalla, personaje)
             elif nivel_seleccionado == 3:
                 resultado = jugar_nivel3(pantalla, personaje)
-            if resultado == "victoria":
+
+            if resultado == "nivel2":
+                nivel_seleccionado = 2
+                pantalla_actual = "play"
+            elif resultado == "nivel3":
+                nivel_seleccionado = 3
+                pantalla_actual = "play"
+            elif resultado == "victoria":
                 pantalla_actual = "menu"
             elif resultado == "game_over":
                 pantalla_actual = pantalla_gameover(pantalla, personaje)

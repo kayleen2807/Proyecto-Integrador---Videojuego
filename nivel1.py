@@ -147,7 +147,7 @@ def jugar_nivel1(pantalla, personaje):
                 print("¡Victoria detectada!")
                 detener_musica()
                 victoria(pantalla, personaje)
-                return "victoria"
+                return "nivel2"
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)
