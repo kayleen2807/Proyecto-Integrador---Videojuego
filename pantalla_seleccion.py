@@ -194,7 +194,7 @@ def mostrar_pantalla_controles(pantalla):
     frame_actual = 0
     reloj = pygame.time.Clock()
 
-    boton_salir = Button(image=pygame.image.load("assets/español/pantalla_opc/quit_opt.png"), image_hover=pygame.image.load("assets/español/pantalla_opc/quit_opt_h.png"), pos=(635, 640), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
+    boton_salir = Button(image=cargar_img("pantalla_opc/quit_opt.png"), image_hover=cargar_img("pantalla_opc/quit_opt_h.png"), pos=(635, 640), text_input=".", font=get_font(1), base_color="Black", hovering_color="Blue")
 
 
     while True:

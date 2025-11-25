@@ -328,7 +328,7 @@ def jugar_nivel3(pantalla, personaje):
                         return "menu"
 
                     elif boton_reiniciar and boton_reiniciar.checkForInput(mouse_pos):
-                        reproducir_musica("assets/musica/music_game.mp3", volumen=0.5)
+                        reproducir_musica("assets/musica/music_3.mp3", volumen=0.5)
                         return "reiniciar"
 
         # Renderizado constante del menú de pausa
