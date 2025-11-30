@@ -16,6 +16,7 @@ def jugar_nivel2(pantalla, personaje):
     from vidas import dibujar_hud_vidas
     from objetos import dibujar_items, sprite_humo, cargar_humos, victoria2
     from game_over import pantalla_gameover
+    from contador import dibujar_hud_humo
     pygame.display.set_caption("Play")
     reproducir_musica ("assets/musica/music_2.mp3", volumen=0.3, loop=-1)
 
@@ -223,6 +224,8 @@ def jugar_nivel2(pantalla, personaje):
 
             # Dibujar HUD de vidas
             dibujar_hud_vidas(pantalla, jugador.vidas)
+            #Dibujar HUD de humo
+            dibujar_hud_humo(pantalla, len(cargar_humos(tmx_data)) - len(humos), len(cargar_humos(tmx_data)))
 
         jugador.actualizar_estado(keys, en_el_suelo, vel_y)
         jugador.dibujar(pantalla, camara_x, camara_y, zoom)

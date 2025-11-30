@@ -6,7 +6,6 @@ from selection_player import Personaje
 from pause_menu import mostrar_menu_pausa
 from juego import fade_in_total, nfondo
 from musica import reproducir_musica, detener_musica, pausar_musica, continuar_musica
-from objetos import animacion_intro
 
 def cargar_img(ruta_relativa):
     ruta = f"assets/{config.idioma}/{ruta_relativa}"
@@ -15,11 +14,43 @@ def cargar_img(ruta_relativa):
 # Pantalla principal del juego:
 def jugar_nivel1(pantalla, personaje):
     from vidas import dibujar_hud_vidas
-    from basura import dibujar_hud_basura
+    from contador import dibujar_hud_basura
     from objetos import recolectar_items, dibujar_items, sprite_basura, verificar_victoria, cargar_basura, victoria
     pygame.display.set_caption("Play")
-    
-    animacion_intro(pantalla, personaje)
+    #skip intro
+    intro = True
+    boton_skip = Button(image=cargar_img("intro/omitir.png"), image_hover=cargar_img("intro/omitir_h.png"), pos=(1150, 650), text_input=".", font=get_font(1), base_color="White", hovering_color="Gray")
+    clock = pygame.time.Clock()
+
+    # Cargar frames de la intro
+    ruta_frames = f"assets/intro/nivel1/{personaje}/"
+    frames = []
+    for i in range(10):
+        frame = pygame.image.load(f"{ruta_frames}intro_{i}.png").convert_alpha()
+        frame = pygame.transform.scale(frame, pantalla.get_size())
+        frames.append(frame)
+
+    # Reproducir animación con opción de skip
+    for frame in frames:
+        pantalla.blit(frame, (0, 0))
+
+        mouse_pos = pygame.mouse.get_pos()
+        boton_skip.changeColor(mouse_pos)
+        boton_skip.update(pantalla)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return "salir"
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if boton_skip.checkForInput(mouse_pos):
+                    intro = False  # saltar animación
+                    break
+
+        pygame.display.flip()
+        clock.tick(1)  # controla velocidad
+
+        if not intro:
+            break
 
     reproducir_musica ("assets/musica/music_1.mp3", volumen=0.3, loop=-1)
     zoom = 1.5
